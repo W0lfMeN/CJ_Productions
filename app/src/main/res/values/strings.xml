@@ -5,7 +5,7 @@
     <string name="btSaberMas">Saber mas</string>
     <string name="btIniciarSesion">Iniciar sesión o Registrarse</string>
 
-
+    <!-- Textos para los botones del Main Activity cuando se haga un LongClick -->
     <string name="textoBtSaberMas">Pulsa para obtener mas informacion del videojuego</string>
     <string name="textoBtIniciarSesion">Pulsa para iniciar sesion o registrarse</string>
 

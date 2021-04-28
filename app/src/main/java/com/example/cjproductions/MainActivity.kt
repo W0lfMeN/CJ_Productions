@@ -8,6 +8,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.cjproductions.login.InicioSesion
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -23,6 +24,44 @@ class MainActivity : AppCompatActivity() {
         //Llamamos al metodo donde estarán todos los listeners de la ventana principal
         ponerListeners()
 
+        //Llamamos al metodo que se encarga de poner y reproducir el video de fondo del activity
+        iniciarBackgroundVideo()
+    }
+
+    /**
+     * Metodo que añade los listeners que necesitamos en este activity
+     */
+    private fun ponerListeners(){
+        //Boton Saber Mas
+
+        btSaberMas.setOnClickListener{
+            //Aqui se llamará a la pantalla de comprar producto
+        }
+
+        btSaberMas.setOnLongClickListener{
+            Toast.makeText(this,R.string.textoBtSaberMas, Toast.LENGTH_SHORT).show()
+
+            true
+        }
+
+        //Boton Iniciar Sesion
+
+        btIniciarSesion.setOnClickListener{
+            val intent: Intent = Intent(this, InicioSesion::class.java)
+            startActivity(intent)
+        }
+
+        btIniciarSesion.setOnLongClickListener{
+            Toast.makeText(this,R.string.textoBtIniciarSesion, Toast.LENGTH_SHORT).show()
+
+            true
+        }
+    }
+
+    /**
+     * Funcion que se encarga de buscar e iniciar el video de fondo del activity
+     */
+    private fun iniciarBackgroundVideo(){
         //Instanciamos la ruta del video de fondo usando la clase Uri
         videoPrincipal.setVideoURI(Uri.parse("android.resource://${packageName}/${R.raw.video_principal}"))
 
@@ -39,35 +78,31 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun ponerListeners(){
-        btSaberMas.setOnClickListener{
-            //Aqui se llamará a la pantalla de comprar producto
-        }
-
-        btSaberMas.setOnLongClickListener{
-            Toast.makeText(this,R.string.textoBtSaberMas, Toast.LENGTH_SHORT).show()
-
-            true
-        }
-
-        btIniciarSesion.setOnClickListener{
-
-        }
-
-        btIniciarSesion.setOnLongClickListener{
-            Toast.makeText(this,R.string.textoBtIniciarSesion, Toast.LENGTH_SHORT).show()
-
-            true
-        }
+    /**
+     * Este metodo se ejecuta cuando se vuelve a la ventana principal
+     * desde cualquier otro activity.
+     *
+     * Lo que hace es reproducir otra vez el video de fondo.
+     * De no hacer esto, la pantalla se quedará en blanco
+     * cuando se vuelva desde otro activity
+     */
+    override fun onRestart() {
+        super.onRestart()
+        iniciarBackgroundVideo()
     }
 
-    //Crea las opciones del menu
+    /**
+     * Metodo que añade el icono de las opciones del menu en el activity
+     */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflate: MenuInflater = menuInflater
         inflate.inflate(R.menu.menu_principal, menu)
         return true
     }
-    //Les damos funcionalidad al boton del menu
+
+    /**
+     * Metodo que les da funcionalidad a los botones del menu
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId){
 

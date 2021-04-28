@@ -18,12 +18,25 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true" />
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="184dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.805"
+        app:srcCompat="@drawable/logo_genesis" />
+
     <Button
         android:id="@+id/btSaberMas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="550dp"
-        android:layout_marginEnd="140dp"
+        android:layout_marginTop="552dp"
+        android:layout_marginEnd="144dp"
         android:text="@string/btSaberMas"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -36,8 +49,8 @@
         android:layout_marginBottom="600dp"
         android:backgroundTint="#4fc3f7"
         android:text="@string/btIniciarSesion"
-        app:layout_constraintBottom_toBottomOf="parent"
 
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
 
