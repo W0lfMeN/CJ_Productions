@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "745715430420",
+    "project_id": "cjproductions-pi2020",
+    "storage_bucket": "cjproductions-pi2020.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:745715430420:android:ec9a7517ac9d009e56a301",
+        "android_client_info": {
+          "package_name": "com.example.cjproductions"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "745715430420-csa60gu5dk8b7rgm045ectadllrn2j8o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD782bNLOmMM0F9B-dYpAQOm4Cvb8ueqI0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "745715430420-csa60gu5dk8b7rgm045ectadllrn2j8o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

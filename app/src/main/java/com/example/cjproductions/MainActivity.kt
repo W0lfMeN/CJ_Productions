@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cjproductions.login.InicioSesion
@@ -26,6 +27,9 @@ class MainActivity : AppCompatActivity() {
 
         //Llamamos al metodo que se encarga de poner y reproducir el video de fondo del activity
         iniciarBackgroundVideo()
+
+        //Esta linea oculta el boton INICIAR SESION
+        //btIniciarSesion.setVisibility(View.INVISIBLE)
     }
 
     /**

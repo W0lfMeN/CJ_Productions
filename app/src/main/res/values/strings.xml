@@ -15,4 +15,11 @@
     <string name="textoNovedades">Novedades</string>
     <string name="TextoSobreNosotros">Sobre Nosotros</string>
 
+    <!-- Inicio Sesion -->
+    <string name="etEmail">Email</string>
+    <string name="etContraseña">Contraseña</string>
+    <string name="btLogin">Iniciar sesión</string>
+    <string name="btRegistrarse">Resistrarse</string>
+
+
 </resources>
