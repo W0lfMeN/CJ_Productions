@@ -1,13 +1,15 @@
 <resources>
     <string name="app_name">CJ Productions</string>
 
-    <!-- MainActivity -->
-    <string name="btSaberMas">Saber mas</string>
-    <string name="btIniciarSesion">Iniciar sesión o Registrarse</string>
+    <!-- /////////////////////// MainActivity ////////////////////// -->
+    <string name="mainBtSaberMas">Saber mas</string>
+    <string name="mainBtIniciarSesion">Iniciar sesión</string>
+    <string name="mainBtRegistrarse">Registrarse</string>
 
     <!-- Textos para los botones del Main Activity cuando se haga un LongClick -->
-    <string name="textoBtSaberMas">Pulsa para obtener mas informacion del videojuego</string>
-    <string name="textoBtIniciarSesion">Pulsa para iniciar sesion o registrarse</string>
+    <string name="mainTextoBtSaberMas">Pulsa para obtener mas informacion del videojuego</string>
+    <string name="mainTextoBtIniciarSesion">Pulsa para iniciar sesion</string>
+    <string name="mainTextoBtRegistrarse">Pulsa para registrarse</string>
 
     <!-- Desplegable -->
     <string name="textoAtencionCliente">Atencion al cliente</string>
@@ -15,11 +17,30 @@
     <string name="textoNovedades">Novedades</string>
     <string name="TextoSobreNosotros">Sobre Nosotros</string>
 
-    <!-- Inicio Sesion -->
+    <!-- /////////////////////// Inicio Sesion ////////////////////// -->
     <string name="etEmail">Email</string>
     <string name="etContraseña">Contraseña</string>
+    <string name="etContraseña2">Confirmar contraseña</string>
     <string name="btLogin">Iniciar sesión</string>
     <string name="btRegistrarse">Resistrarse</string>
+
+    <!-- Texto para los botones de Inicio de sesion -->
+    <string name="textoBtLogin">Pulsa para iniciar sesión</string>
+    <string name="textoBtRegistrarse">Pulsa para registrarse</string>
+
+    <!-- String para la notificar que un campo está vacío -->
+    <string name="error_campos">Rellene el campo %s</string>
+
+    <!-- String que aparece cuando las contraseñas no coinciden -->
+    <string name="errorContraseña">Las contraseñas no son iguales</string>
+
+    <!-- String que aparece cuando el campo email no es valido -->
+    <string name="emailNoValido">El email no tiene un formato valido</string>
+
+    <!-- String que aparece cuando la contraseña tiene menos de 6 caracteres -->
+    <string name="contraseñaLongitudError">La contraseña tiene que tener minimo 6 caracteres</string>
+
+
 
 
 </resources>

@@ -37,21 +37,29 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="552dp"
         android:layout_marginEnd="144dp"
-        android:text="@string/btSaberMas"
+        android:text="@string/mainBtSaberMas"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btIniciarSesion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="600dp"
-        android:backgroundTint="#4fc3f7"
-        android:text="@string/btIniciarSesion"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <Button
+            android:id="@+id/mainBtIniciarSesion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#4caf50"
+            android:text="@string/mainBtIniciarSesion" />
+
+        <Button
+            android:id="@+id/mainBtRegistrarse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#4fc3f7"
+            android:text="@string/mainBtRegistrarse" />
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

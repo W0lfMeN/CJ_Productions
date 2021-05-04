@@ -6,10 +6,10 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cjproductions.login.InicioSesion
+import com.example.cjproductions.login.Registrarse
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -43,22 +43,35 @@ class MainActivity : AppCompatActivity() {
         }
 
         btSaberMas.setOnLongClickListener{
-            Toast.makeText(this,R.string.textoBtSaberMas, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,R.string.mainTextoBtSaberMas, Toast.LENGTH_SHORT).show()
 
             true
         }
 
         //Boton Iniciar Sesion
 
-        btIniciarSesion.setOnClickListener{
+        mainBtIniciarSesion.setOnClickListener{
             val intent: Intent = Intent(this, InicioSesion::class.java)
             startActivity(intent)
         }
 
-        btIniciarSesion.setOnLongClickListener{
-            Toast.makeText(this,R.string.textoBtIniciarSesion, Toast.LENGTH_SHORT).show()
+        mainBtIniciarSesion.setOnLongClickListener{
+            Toast.makeText(this,R.string.mainTextoBtIniciarSesion, Toast.LENGTH_SHORT).show()
 
             true
+        }
+
+        //Boton Registrarse
+
+        mainBtRegistrarse.setOnLongClickListener{
+            Toast.makeText(this,R.string.mainTextoBtRegistrarse, Toast.LENGTH_SHORT).show()
+
+            true
+        }
+
+        mainBtRegistrarse.setOnClickListener{
+            val intent: Intent = Intent(this, Registrarse::class.java)
+            startActivity(intent)
         }
     }
 

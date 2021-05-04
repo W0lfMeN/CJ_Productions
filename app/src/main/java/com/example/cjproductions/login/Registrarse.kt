@@ -1,44 +1,49 @@
 package com.example.cjproductions.login
 
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cjproductions.R
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.activity_inicio_sesion.*
+import kotlinx.android.synthetic.main.activity_registrarse.*
+import java.util.regex.Pattern
 
-class InicioSesion : AppCompatActivity() {
+
+class Registrarse : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_inicio_sesion)
-        title="Iniciar Sesion" //Cambia el titulo de la ventana
+        setContentView(R.layout.activity_registrarse)
+
+        title = "Registrarse"
+
         ponerListeners()
     }
 
     private fun ponerListeners(){
-        btLogin.setOnClickListener{
-            if (!comprobar()) return@setOnClickListener //Se comprueba que todos los campos están correctos antes de continuar
+        btRegistrarse.setOnLongClickListener{
+            Toast.makeText(this, R.string.textoBtLogin, Toast.LENGTH_SHORT).show()
+            true
+        }
 
-            FirebaseAuth.getInstance().signInWithEmailAndPassword(
+        btRegistrarse.setOnClickListener{
+            if (!comprobar()) return@setOnClickListener
+
+            FirebaseAuth.getInstance().createUserWithEmailAndPassword(
                 etEmail.text.toString(),
                 etContrasena.text.toString()
             ).addOnCompleteListener{
 
                 if(it.isSuccessful){
-                    Toast.makeText(this,"FUNCIONA", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "FUNCIONA", Toast.LENGTH_LONG).show()
                 }else{
-                    showAlert("Ha ocurrido un error durante el inicio de sesión")
+                    showAlert("Ha ocurrido un error durante la creacion del usuario")
                 }
             }
-
-        }
-
-        btLogin.setOnLongClickListener{
-            Toast.makeText(this,R.string.textoBtLogin, Toast.LENGTH_SHORT).show()
-            true
         }
     }
+
 
     /**
      * Funcion que comprueba que los campos de texto no estén vacios
@@ -46,6 +51,7 @@ class InicioSesion : AppCompatActivity() {
     private fun comprobar(): Boolean{
         var email = etEmail.text.toString().trim()
         var contrasena= etContrasena.text.toString().trim()
+        var contrasena2= etContrasena2.text.toString().trim()
 
         if(!isOk(email)){
             etEmail.error=resources.getString(R.string.error_campos).format("Email")
@@ -55,9 +61,27 @@ class InicioSesion : AppCompatActivity() {
             etContrasena.error=resources.getString(R.string.error_campos).format("Contraseña")
             return false
         }
+        if(!isOk(contrasena2)){
+            etContrasena2.error=resources.getString(R.string.error_campos).format("Confirmar Contraseña")
+            return false
+        }
+
+        //Comprueba que los dos campos de las contraseñas son iguales
+        if(!(contrasena == contrasena2)){
+            showAlert(resources.getString(R.string.errorContraseña))
+            return false
+        }
 
         if(contrasena.length<6){
             showAlert(resources.getString(R.string.contraseñaLongitudError))
+            return false
+        }
+
+        //Comprueba que el email introducido es valido (ojo, puede no existir pero ser valido)
+        val patronEmail: Pattern = Patterns.EMAIL_ADDRESS
+
+        if(!patronEmail.matcher(email).matches()){
+            showAlert(resources.getString(R.string.emailNoValido))
             return false
         }
 
@@ -73,7 +97,11 @@ class InicioSesion : AppCompatActivity() {
         return !cadena.isEmpty()
     }
 
-    private fun showAlert(mensaje:String){
+    /**
+     * Funcion que genera un mensaje de alerta en la pantalla
+     * con el texto que se le pase por parametro
+     */
+    private fun showAlert(mensaje: String){
         val builder = AlertDialog.Builder(this)
         builder.setTitle("ERROR")
         builder.setMessage(mensaje)
@@ -81,5 +109,4 @@ class InicioSesion : AppCompatActivity() {
         val dialog= builder.create()
         dialog.show()
     }
-
 }

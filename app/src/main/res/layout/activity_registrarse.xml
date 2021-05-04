@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".login.InicioSesion"
+    tools:context=".login.Registrarse"
     android:background="@drawable/background_login">
 
     <androidx.cardview.widget.CardView
@@ -15,7 +15,7 @@
         android:layout_margin="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -61,12 +61,32 @@
                     android:textColor="@android:color/white" />
             </androidx.cardview.widget.CardView>
 
-                <Button
-                    android:id="@+id/btLogin"
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:padding="10dp"
+                app:cardBackgroundColor="#5EB1B1B1"
+                app:cardElevation="2dp">
+
+                <EditText
+                    android:id="@+id/etContrasena2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/btLogin"
-                    android:backgroundTint="#4caf50"/>
+
+                    android:layout_margin="10dp"
+                    android:backgroundTint="@android:color/white"
+                    android:hint="@string/etContraseña2"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@android:color/white" />
+            </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/btRegistrarse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#00bcd4"
+                android:text="@string/mainBtRegistrarse" />
 
         </LinearLayout>
 
