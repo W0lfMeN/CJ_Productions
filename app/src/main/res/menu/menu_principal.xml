@@ -15,8 +15,18 @@
         app:showAsAction="never"/>
 
     <item android:id="@+id/SobreNosotros"
-        android:title="@string/TextoSobreNosotros"
+        android:title="@string/textoSobreNosotros"
         app:showAsAction="never"/>
+
+    <item android:id="@+id/mainBtRegistrarse"
+        android:title="@string/mainBtRegistrarse"
+        android:icon="@drawable/add_user_icon"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/mainBtIniciarSesion"
+        android:title="@string/mainBtIniciarSesion"
+        android:icon="@drawable/login_icon"
+        app:showAsAction="ifRoom"/>
 
 
 </menu>

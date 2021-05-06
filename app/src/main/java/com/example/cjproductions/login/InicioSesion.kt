@@ -1,5 +1,6 @@
 package com.example.cjproductions.login
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -7,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.cjproductions.R
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_inicio_sesion.*
+import kotlinx.android.synthetic.main.activity_main.*
+
 
 class InicioSesion : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,12 +24,16 @@ class InicioSesion : AppCompatActivity() {
             if (!comprobar()) return@setOnClickListener //Se comprueba que todos los campos están correctos antes de continuar
 
             FirebaseAuth.getInstance().signInWithEmailAndPassword(
-                etEmail.text.toString(),
-                etContrasena.text.toString()
+                    etEmail.text.toString(),
+                    etContrasena.text.toString()
             ).addOnCompleteListener{
 
                 if(it.isSuccessful){
-                    Toast.makeText(this,"FUNCIONA", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, R.string.inicioSesionCorrecto, Toast.LENGTH_LONG).show()
+                    val returnIntent = Intent()
+                    returnIntent.putExtra("email", etEmail.text.toString().trim())
+                    setResult(RESULT_OK, returnIntent)
+                    finish()
                 }else{
                     showAlert("Ha ocurrido un error durante el inicio de sesión")
                 }
@@ -35,7 +42,7 @@ class InicioSesion : AppCompatActivity() {
         }
 
         btLogin.setOnLongClickListener{
-            Toast.makeText(this,R.string.textoBtLogin, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.textoBtLogin, Toast.LENGTH_SHORT).show()
             true
         }
     }
@@ -73,7 +80,7 @@ class InicioSesion : AppCompatActivity() {
         return !cadena.isEmpty()
     }
 
-    private fun showAlert(mensaje:String){
+    private fun showAlert(mensaje: String){
         val builder = AlertDialog.Builder(this)
         builder.setTitle("ERROR")
         builder.setMessage(mensaje)

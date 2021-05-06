@@ -47,18 +47,25 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/mainBtIniciarSesion"
+            android:id="@+id/mainBtPerfil"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/mainBtPerfil"
+            android:backgroundTint="#00bcd4"/>
+
+        <Space
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="#4caf50"
-            android:text="@string/mainBtIniciarSesion" />
+            android:layout_weight="1" />
 
         <Button
-            android:id="@+id/mainBtRegistrarse"
-            android:layout_width="wrap_content"
+            android:id="@+id/mainBtCerrarSesion"
+            android:layout_width="118dp"
             android:layout_height="wrap_content"
-            android:backgroundTint="#4fc3f7"
-            android:text="@string/mainBtRegistrarse" />
+            android:layout_weight="1"
+            android:backgroundTint="#ffc107"
+            android:text="@string/mainBtCerrarSesion" />
     </LinearLayout>
 
 

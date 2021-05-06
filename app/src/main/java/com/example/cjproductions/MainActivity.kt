@@ -1,15 +1,19 @@
 package com.example.cjproductions
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cjproductions.login.InicioSesion
 import com.example.cjproductions.login.Registrarse
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -22,14 +26,31 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val prefs: SharedPreferences = getSharedPreferences(getString(R.string.preferenciasFile), Context.MODE_PRIVATE)
+        /**
+         * Este if nos hará saber si hay una sesion iniciada comprobando el contenido de la persistencia
+         *
+         * Si por defecto es null, quiere decir que no hay datos, por lo cual no hay sesion iniciada
+         * por lo que llama al metodo de ocultar el boton para cerrar sesion pasandole el parametro correcto
+         *
+         * Por el contrario si es distinto de null, quiere decir que hay una sesion iniciada
+         * y mostrará el boton de cerrar sesion llamando al metodo correspondiente
+         */
+        if(prefs.getString("email",null)==null){
+            mostrarOcultarBtCerrarSesion(0)
+            mostrarOcultarBtVerPerfil(0)
+        }else{
+            mostrarOcultarBtCerrarSesion(1)
+            mostrarOcultarBtVerPerfil(1)
+            Toast.makeText(this,"Hay usuario en SHARED "+prefs.getString("email", null), Toast.LENGTH_SHORT).show()
+        }
+
         //Llamamos al metodo donde estarán todos los listeners de la ventana principal
         ponerListeners()
 
         //Llamamos al metodo que se encarga de poner y reproducir el video de fondo del activity
         iniciarBackgroundVideo()
 
-        //Esta linea oculta el boton INICIAR SESION
-        //btIniciarSesion.setVisibility(View.INVISIBLE)
     }
 
     /**
@@ -48,31 +69,30 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        //Boton Iniciar Sesion
+        //Boton Cerrar Sesion
 
-        mainBtIniciarSesion.setOnClickListener{
-            val intent: Intent = Intent(this, InicioSesion::class.java)
-            startActivity(intent)
-        }
-
-        mainBtIniciarSesion.setOnLongClickListener{
-            Toast.makeText(this,R.string.mainTextoBtIniciarSesion, Toast.LENGTH_SHORT).show()
-
+        mainBtCerrarSesion.setOnLongClickListener{
+            Toast.makeText(this,R.string.mainTextoBtCerrarSesion, Toast.LENGTH_SHORT).show()
             true
         }
 
-        //Boton Registrarse
+        mainBtCerrarSesion.setOnClickListener{
+            FirebaseAuth.getInstance().signOut()
+            Toast.makeText(this,R.string.sesionCerradaCorrectamente, Toast.LENGTH_SHORT).show()
 
-        mainBtRegistrarse.setOnLongClickListener{
-            Toast.makeText(this,R.string.mainTextoBtRegistrarse, Toast.LENGTH_SHORT).show()
+            borrarPreferencias() //borra el correo que hay en el archivo de preferencias
 
+            mostrarOcultarBtCerrarSesion(0) //oculta el boton de cerrar sesion
+            mostrarOcultarBtVerPerfil(0) //Oculta el boton de ver perfil
+        }
+
+        //Boton Ver Perfil
+
+        mainBtPerfil.setOnLongClickListener{
+            Toast.makeText(this,R.string.mainTextoBtVerPerfil, Toast.LENGTH_SHORT).show()
             true
         }
 
-        mainBtRegistrarse.setOnClickListener{
-            val intent: Intent = Intent(this, Registrarse::class.java)
-            startActivity(intent)
-        }
     }
 
     /**
@@ -125,8 +145,7 @@ class MainActivity : AppCompatActivity() {
 
             //Al pulsarse se llamará a la clase de Atencion Al cliente
             R.id.AtencionCliente ->{
-                //val intent: Intent = Intent(this, "ClaseJava"::class.java)
-                //startActivity(intent)
+
             }
 
             //Al pulsarse se llamará a la clase de Novedades
@@ -146,7 +165,93 @@ class MainActivity : AppCompatActivity() {
                 //val intent: Intent = Intent(this, "ClaseJava"::class.java)
                 //startActivity(intent)
             }
+
+            R.id.mainBtIniciarSesion ->{
+                val intent: Intent = Intent(this, InicioSesion::class.java)
+                startActivityForResult(intent, 100)
+                //Este metodo llama al activity y cuando termine llama a onActivityResult
+                //para trabajar con los datos enviados de dicho activity
+            }
+
+            R.id.mainBtRegistrarse ->{
+                val intent: Intent = Intent(this, Registrarse::class.java)
+                startActivityForResult(intent, 100)
+            }
+
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    /**
+     * Metodo que es llamado automaticamente cuando termina el activity Iniciar sesion
+     * Lo que hace es retornar el correo que ha sido introducido en el activity para guardarlo
+     * en el archivo de preferencias
+     */
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode==100 && resultCode == RESULT_OK){
+            if (data != null) {
+                editarPersistenciaDatos(data.getStringExtra("email"))
+                Toast.makeText(this,"Hay usuario en ACTIVITY RESULT"+data.getStringExtra("email"), Toast.LENGTH_SHORT).show()
+
+                //Aqui haremos aparecer al boton de Cerrar sesion y el boton de Ver Perfil
+                mostrarOcultarBtCerrarSesion(1)
+                mostrarOcultarBtVerPerfil(1)
+            }
+        }
+
+    }
+
+    /**
+     * Metodo que añade el correo al fichero de persistencia
+     */
+    fun editarPersistenciaDatos(email: String?) {
+        val prefs: SharedPreferences.Editor? = getSharedPreferences(getString(R.string.preferenciasFile), Context.MODE_PRIVATE).edit()
+        if (prefs != null) {
+            prefs.putString("email", email)
+            prefs.apply()
+            Toast.makeText(this,"Hay usuario añadido a SHARED", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    /**
+     * Metodo que borra el contenido del fichero de persistencia
+     */
+    fun borrarPreferencias(){
+        val prefs: SharedPreferences.Editor? = getSharedPreferences(getString(R.string.preferenciasFile), Context.MODE_PRIVATE).edit()
+        if (prefs != null) {
+            prefs.clear()
+            prefs.apply()
+            Toast.makeText(this,"SE BORRA SHARED", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * Metodo que muestra u oculta el boton de iniciar sesion segun el parametro
+     *
+     * 1 para MOSTRAR el botón
+     * 0 para OCULTAR el botón
+     */
+    fun mostrarOcultarBtCerrarSesion(valor:Int){
+        if(valor==1)
+            mainBtCerrarSesion.setVisibility(View.VISIBLE)
+
+        if(valor==0)
+            mainBtCerrarSesion.setVisibility(View.INVISIBLE)
+    }
+
+    /**
+     * Metodo que muestra u oculta el boton de iniciar sesion segun el parametro
+     *
+     * 1 para MOSTRAR el botón
+     * 0 para OCULTAR el botón
+     */
+    fun mostrarOcultarBtVerPerfil(valor:Int){
+        if(valor==1)
+            mainBtPerfil.setVisibility(View.VISIBLE)
+
+        if(valor==0)
+            mainBtPerfil.setVisibility(View.INVISIBLE)
     }
 }

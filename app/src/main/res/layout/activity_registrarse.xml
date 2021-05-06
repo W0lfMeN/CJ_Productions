@@ -73,7 +73,6 @@
                     android:id="@+id/etContrasena2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:layout_margin="10dp"
                     android:backgroundTint="@android:color/white"
                     android:hint="@string/etContraseña2"
@@ -84,9 +83,23 @@
             <Button
                 android:id="@+id/btRegistrarse"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="54dp"
                 android:backgroundTint="#00bcd4"
                 android:text="@string/mainBtRegistrarse" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/btRegistrarseGoogle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:drawableLeft="@mipmap/logo_google"
+                android:text="@string/btResistrarseGoogle"
+                android:textColor="@color/black" />
 
         </LinearLayout>
 

@@ -55,6 +55,8 @@ dependencies {
     //--------------------FIREBASE
     implementation platform('com.google.firebase:firebase-bom:27.1.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
-    //Autentication
+    //Autentication correo y contraseña
     implementation 'com.google.firebase:firebase-auth-ktx:20.0.3'
+    //Autentication por cuenta Gmail
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
 }

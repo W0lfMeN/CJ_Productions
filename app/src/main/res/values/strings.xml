@@ -1,32 +1,42 @@
 <resources>
     <string name="app_name">CJ Productions</string>
 
+    <!-- Nombre del SharedPreferences-->
+    <string name="preferenciasFile">com.example.cjproductions.PREFERENCIAS</string>
+
     <!-- /////////////////////// MainActivity ////////////////////// -->
     <string name="mainBtSaberMas">Saber mas</string>
     <string name="mainBtIniciarSesion">Iniciar sesión</string>
     <string name="mainBtRegistrarse">Registrarse</string>
+    <string name="mainBtCerrarSesion">Cerrar Sesión</string>
+    <string name="mainBtPerfil">Ver perfil</string>
 
     <!-- Textos para los botones del Main Activity cuando se haga un LongClick -->
     <string name="mainTextoBtSaberMas">Pulsa para obtener mas informacion del videojuego</string>
-    <string name="mainTextoBtIniciarSesion">Pulsa para iniciar sesion</string>
-    <string name="mainTextoBtRegistrarse">Pulsa para registrarse</string>
+    <string name="mainTextoBtCerrarSesion">Pulsa para cerrar sesión</string>
+    <string name="mainTextoBtVerPerfil">Pulsa para ver y configurar tu perfil</string>
 
     <!-- Desplegable -->
     <string name="textoAtencionCliente">Atencion al cliente</string>
     <string name="textoComprarProductos">Comprar Productos</string>
     <string name="textoNovedades">Novedades</string>
-    <string name="TextoSobreNosotros">Sobre Nosotros</string>
+    <string name="textoSobreNosotros">Sobre Nosotros</string>
 
-    <!-- /////////////////////// Inicio Sesion ////////////////////// -->
+    <!-- String que aparece cuando se cierra sesion correctamente -->
+    <string name="sesionCerradaCorrectamente">Sesión cerrada correctamente</string>
+
+    <!-- /////////////////////// Inicio Sesion y Registrarse ////////////////////// -->
     <string name="etEmail">Email</string>
     <string name="etContraseña">Contraseña</string>
     <string name="etContraseña2">Confirmar contraseña</string>
-    <string name="btLogin">Iniciar sesión</string>
+    <string name="btIniciarSesion">Iniciar sesión</string>
     <string name="btRegistrarse">Resistrarse</string>
+    <string name="btResistrarseGoogle">Registrarse con Google</string>
 
     <!-- Texto para los botones de Inicio de sesion -->
     <string name="textoBtLogin">Pulsa para iniciar sesión</string>
-    <string name="textoBtRegistrarse">Pulsa para registrarse</string>
+    <string name="textoBtRegistrarse">Pulsa para registrarte</string>
+    <string name="textoBtRegistrarseGoogle">Pulsa para registrarte usando una cuenta de correo electronico de Google</string>
 
     <!-- String para la notificar que un campo está vacío -->
     <string name="error_campos">Rellene el campo %s</string>
@@ -35,12 +45,14 @@
     <string name="errorContraseña">Las contraseñas no son iguales</string>
 
     <!-- String que aparece cuando el campo email no es valido -->
-    <string name="emailNoValido">El email no tiene un formato valido</string>
+    <string name="emailNoValido">El email no tiene un formato válido</string>
 
     <!-- String que aparece cuando la contraseña tiene menos de 6 caracteres -->
-    <string name="contraseñaLongitudError">La contraseña tiene que tener minimo 6 caracteres</string>
+    <string name="contraseñaLongitudError">La contraseña tiene que tener mínimo 6 caracteres</string>
 
+    <!-- String que aparece cuando se registra correctamente un usuario -->
+    <string name="registroCorrecto">Usuario registrado correctamente</string>
 
-
-
+    <!-- String que aparece cuando se inicia sesion correctamente -->
+    <string name="inicioSesionCorrecto">Se ha iniciado sesión correctamente</string>
 </resources>
