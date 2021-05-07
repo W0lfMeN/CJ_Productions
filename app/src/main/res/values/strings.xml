@@ -31,7 +31,7 @@
     <string name="etContraseña2">Confirmar contraseña</string>
     <string name="btIniciarSesion">Iniciar sesión</string>
     <string name="btRegistrarse">Resistrarse</string>
-    <string name="btResistrarseGoogle">Registrarse con Google</string>
+    <string name="btResistrarseGoogle">Iniciar sesion con Google</string>
 
     <!-- Texto para los botones de Inicio de sesion -->
     <string name="textoBtLogin">Pulsa para iniciar sesión</string>
@@ -55,4 +55,10 @@
 
     <!-- String que aparece cuando se inicia sesion correctamente -->
     <string name="inicioSesionCorrecto">Se ha iniciado sesión correctamente</string>
+
+    <!--/////////////////////// VER PERFIL ////////////////////// -->
+    <string name="foto_de_perfil">Foto de perfil</string>
+    <string name="tCorreo">Dirección de correo electronico</string>
+    <string name="etCorreo">%d</string>
+
 </resources>

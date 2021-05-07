@@ -61,16 +61,28 @@
                     android:textColor="@android:color/white" />
             </androidx.cardview.widget.CardView>
 
-                <Button
-                    android:id="@+id/btLogin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/btIniciarSesion"
-                    android:backgroundTint="#4caf50"/>
+            <Button
+                android:id="@+id/btLogin"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:backgroundTint="#4caf50"
+                android:text="@string/btIniciarSesion" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/btRegistrarseGoogle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:drawableLeft="@mipmap/logo_google"
+                android:text="@string/btResistrarseGoogle"
+                android:textColor="@color/black" />
 
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
-
-
 </RelativeLayout>

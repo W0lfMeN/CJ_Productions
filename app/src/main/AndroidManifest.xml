@@ -8,7 +8,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.CJProductions">
-        <activity android:name=".login.Registrarse"></activity>
+        <activity android:name=".perfilUsuarios.PerfilUsuarios"></activity>
+        <activity android:name=".login.Registrarse" />
         <activity android:name=".login.InicioSesion" />
         <activity
             android:name=".MainActivity"

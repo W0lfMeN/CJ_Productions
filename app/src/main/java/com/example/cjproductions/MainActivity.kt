@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cjproductions.login.InicioSesion
 import com.example.cjproductions.login.Registrarse
+import com.example.cjproductions.perfilUsuarios.PerfilUsuarios
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -42,7 +43,6 @@ class MainActivity : AppCompatActivity() {
         }else{
             mostrarOcultarBtCerrarSesion(1)
             mostrarOcultarBtVerPerfil(1)
-            Toast.makeText(this,"Hay usuario en SHARED "+prefs.getString("email", null), Toast.LENGTH_SHORT).show()
         }
 
         //Llamamos al metodo donde estarán todos los listeners de la ventana principal
@@ -91,6 +91,11 @@ class MainActivity : AppCompatActivity() {
         mainBtPerfil.setOnLongClickListener{
             Toast.makeText(this,R.string.mainTextoBtVerPerfil, Toast.LENGTH_SHORT).show()
             true
+        }
+
+        mainBtPerfil.setOnClickListener {
+            val intent: Intent = Intent(this, PerfilUsuarios::class.java)
+            startActivity(intent)
         }
 
     }
@@ -192,7 +197,6 @@ class MainActivity : AppCompatActivity() {
         if(requestCode==100 && resultCode == RESULT_OK){
             if (data != null) {
                 editarPersistenciaDatos(data.getStringExtra("email"))
-                Toast.makeText(this,"Hay usuario en ACTIVITY RESULT"+data.getStringExtra("email"), Toast.LENGTH_SHORT).show()
 
                 //Aqui haremos aparecer al boton de Cerrar sesion y el boton de Ver Perfil
                 mostrarOcultarBtCerrarSesion(1)
@@ -210,7 +214,6 @@ class MainActivity : AppCompatActivity() {
         if (prefs != null) {
             prefs.putString("email", email)
             prefs.apply()
-            Toast.makeText(this,"Hay usuario añadido a SHARED", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -223,7 +226,6 @@ class MainActivity : AppCompatActivity() {
         if (prefs != null) {
             prefs.clear()
             prefs.apply()
-            Toast.makeText(this,"SE BORRA SHARED", Toast.LENGTH_SHORT).show()
         }
     }
 
