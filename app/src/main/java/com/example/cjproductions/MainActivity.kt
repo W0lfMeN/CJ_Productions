@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -27,23 +28,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val prefs: SharedPreferences = getSharedPreferences(getString(R.string.preferenciasFile), Context.MODE_PRIVATE)
-        /**
-         * Este if nos hará saber si hay una sesion iniciada comprobando el contenido de la persistencia
-         *
-         * Si por defecto es null, quiere decir que no hay datos, por lo cual no hay sesion iniciada
-         * por lo que llama al metodo de ocultar el boton para cerrar sesion pasandole el parametro correcto
-         *
-         * Por el contrario si es distinto de null, quiere decir que hay una sesion iniciada
-         * y mostrará el boton de cerrar sesion llamando al metodo correspondiente
-         */
-        if(prefs.getString("email",null)==null){
-            mostrarOcultarBtCerrarSesion(0)
-            mostrarOcultarBtVerPerfil(0)
-        }else{
-            mostrarOcultarBtCerrarSesion(1)
-            mostrarOcultarBtVerPerfil(1)
-        }
+        //Llamamos al metodo que se encarga de comprobar si existe contenido en el archivo de preferencias
+        comprobarArchivoPreferencias()
 
         //Llamamos al metodo donde estarán todos los listeners de la ventana principal
         ponerListeners()
@@ -67,23 +53,6 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this,R.string.mainTextoBtSaberMas, Toast.LENGTH_SHORT).show()
 
             true
-        }
-
-        //Boton Cerrar Sesion
-
-        mainBtCerrarSesion.setOnLongClickListener{
-            Toast.makeText(this,R.string.mainTextoBtCerrarSesion, Toast.LENGTH_SHORT).show()
-            true
-        }
-
-        mainBtCerrarSesion.setOnClickListener{
-            FirebaseAuth.getInstance().signOut()
-            Toast.makeText(this,R.string.sesionCerradaCorrectamente, Toast.LENGTH_SHORT).show()
-
-            borrarPreferencias() //borra el correo que hay en el archivo de preferencias
-
-            mostrarOcultarBtCerrarSesion(0) //oculta el boton de cerrar sesion
-            mostrarOcultarBtVerPerfil(0) //Oculta el boton de ver perfil
         }
 
         //Boton Ver Perfil
@@ -131,6 +100,10 @@ class MainActivity : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart()
         iniciarBackgroundVideo()
+
+        //Aqui se va a comprobar si existe o no contenido en el archivo de preferencias
+        //(Se hace asi para evitar modificar la visibilidad del boton ver perfil desde otro activity)
+        comprobarArchivoPreferencias()
     }
 
     /**
@@ -198,8 +171,7 @@ class MainActivity : AppCompatActivity() {
             if (data != null) {
                 editarPersistenciaDatos(data.getStringExtra("email"))
 
-                //Aqui haremos aparecer al boton de Cerrar sesion y el boton de Ver Perfil
-                mostrarOcultarBtCerrarSesion(1)
+                //Aqui haremos aparecer el boton de Ver Perfil
                 mostrarOcultarBtVerPerfil(1)
             }
         }
@@ -235,25 +207,30 @@ class MainActivity : AppCompatActivity() {
      * 1 para MOSTRAR el botón
      * 0 para OCULTAR el botón
      */
-    fun mostrarOcultarBtCerrarSesion(valor:Int){
-        if(valor==1)
-            mainBtCerrarSesion.setVisibility(View.VISIBLE)
-
-        if(valor==0)
-            mainBtCerrarSesion.setVisibility(View.INVISIBLE)
-    }
-
-    /**
-     * Metodo que muestra u oculta el boton de iniciar sesion segun el parametro
-     *
-     * 1 para MOSTRAR el botón
-     * 0 para OCULTAR el botón
-     */
     fun mostrarOcultarBtVerPerfil(valor:Int){
         if(valor==1)
             mainBtPerfil.setVisibility(View.VISIBLE)
 
         if(valor==0)
             mainBtPerfil.setVisibility(View.INVISIBLE)
+    }
+
+    /**
+     * Este metodo nos hará saber si hay una sesion iniciada comprobando el contenido de la persistencia
+     *
+     * Si por defecto es null, quiere decir que no hay datos, por lo cual no hay sesion iniciada
+     * por lo que llama al metodo de ocultar el boton para cerrar sesion pasandole el parametro correcto
+     *
+     * Por el contrario si es distinto de null, quiere decir que hay una sesion iniciada
+     * y mostrará el boton de cerrar sesion llamando al metodo correspondiente
+     */
+    private fun comprobarArchivoPreferencias(){
+        val prefs: SharedPreferences = getSharedPreferences(getString(R.string.preferenciasFile), Context.MODE_PRIVATE)
+
+        if(prefs.getString("email",null)==null){
+            mostrarOcultarBtVerPerfil(0)
+        }else{
+            mostrarOcultarBtVerPerfil(1)
+        }
     }
 }

@@ -48,24 +48,17 @@
 
         <Button
             android:id="@+id/mainBtPerfil"
-            android:layout_width="140dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/mainBtPerfil"
-            android:backgroundTint="#00bcd4"/>
+            android:layout_weight="0.1"
+            android:backgroundTint="#00bcd4"
+            android:text="@string/mainBtPerfil" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-        <Button
-            android:id="@+id/mainBtCerrarSesion"
-            android:layout_width="118dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="#ffc107"
-            android:text="@string/mainBtCerrarSesion" />
     </LinearLayout>
 
 

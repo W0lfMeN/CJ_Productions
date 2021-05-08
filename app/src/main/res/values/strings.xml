@@ -13,7 +13,6 @@
 
     <!-- Textos para los botones del Main Activity cuando se haga un LongClick -->
     <string name="mainTextoBtSaberMas">Pulsa para obtener mas informacion del videojuego</string>
-    <string name="mainTextoBtCerrarSesion">Pulsa para cerrar sesión</string>
     <string name="mainTextoBtVerPerfil">Pulsa para ver y configurar tu perfil</string>
 
     <!-- Desplegable -->
@@ -59,6 +58,22 @@
     <!--/////////////////////// VER PERFIL ////////////////////// -->
     <string name="foto_de_perfil">Foto de perfil</string>
     <string name="tCorreo">Dirección de correo electronico</string>
-    <string name="etCorreo">%d</string>
+    <string name="tNombre">Nombre completo</string>
+    <string name="tTelefono">Numero de telefono</string>
+    <string name="etValorNoProporcionado">No proporcionado</string>
+
+    <string name="btEditarPerfil">Editar perfil</string>
+    <string name="btCambiarContrasena">Cambiar contraseña</string>
+
+    <string name="textoBtCerrarSesion">Pulsa para cerrar sesión</string>
+    <string name="textoBtEditarPerfil">Pulsa para editar tu perfil</string>
+    <string name="textoBtEditarContrasena">Pulsa para cambiar la contraseña</string>
+
+    <!--/////////////////////// EDITAR PERFIL ////////////////////// -->
+    <string name="btCambiarImagen">Editar imagen</string>
+    <string name="btGuardar">Guardar datos</string>
+    <string name="textoBtGuardar">Pulsa para guardar los datos</string>
+    <string name="textoBtCambiarImagen">Pulsa para editar la foto de perfil</string>
+
 
 </resources>

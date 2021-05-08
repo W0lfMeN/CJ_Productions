@@ -59,4 +59,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx:20.0.3'
     //Autentication por cuenta Gmail
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
+    //FIRESTORE
+    implementation 'com.google.firebase:firebase-firestore-ktx:22.1.2'
 }
