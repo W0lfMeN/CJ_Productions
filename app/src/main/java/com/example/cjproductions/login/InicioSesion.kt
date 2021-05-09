@@ -2,6 +2,7 @@ package com.example.cjproductions.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -15,14 +16,15 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_inicio_sesion.*
-import kotlinx.android.synthetic.main.activity_inicio_sesion.etContrasena
-import kotlinx.android.synthetic.main.activity_inicio_sesion.etEmail
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_registrarse.*
+import java.util.regex.Pattern
 
 
 class InicioSesion : AppCompatActivity() {
+
+    private val db = FirebaseFirestore.getInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inicio_sesion)
@@ -77,6 +79,14 @@ class InicioSesion : AppCompatActivity() {
 
             startActivityForResult(googleClient.signInIntent, 200)
         }
+
+
+        //BOTON RESTABLECER CONTRASEÑA
+
+        btRestablecerContrasena.setOnClickListener {
+            val intent = Intent(this, RestablecerPassword::class.java)
+            startActivity(intent)
+        }
     }
 
 
@@ -99,7 +109,30 @@ class InicioSesion : AppCompatActivity() {
                             returnIntent.putExtra("email", account.email)
                             setResult(RESULT_OK, returnIntent)
 
-                            Toast.makeText(this, R.string.registroCorrecto, Toast.LENGTH_LONG).show()
+                            Toast.makeText(this, R.string.inicioSesionCorrecto, Toast.LENGTH_LONG).show()
+
+                            //Creamos el documento en firestore
+                            val textoDefault:String=resources.getString(R.string.etValorNoProporcionado)
+
+                            /**
+                             * Este bloque de codigo realiza lo siguiente:
+                             * Primero obtiene la informacion de la base de datos
+                             * correspondiente al email.
+                             *
+                             * Una vez termina (it.isComplete), si el resultado es distinto de true,
+                             * quiere decir que no existe ese correo en la base de datos, por lo que procede a crearlo.
+                             *
+                             * Por el contrario, si es True, quiere decir que ese email ya está en la base de datos
+                             * y por lo tanto no hace nada ya que no queremos modificarlo
+                             */
+                            db.collection("Usuarios").document(account.email.toString()).get().addOnCompleteListener {
+                                if (it.isComplete){
+
+                                    if (it.getResult()?.exists() != true)
+                                        db.collection("Usuarios").document(account.email.toString()).
+                                        set(hashMapOf("Nombre" to textoDefault, "Telefono" to textoDefault))
+                                }
+                            }
 
                             finish()
                         }else{
@@ -131,6 +164,14 @@ class InicioSesion : AppCompatActivity() {
 
         if(contrasena.length<6){
             showAlert(resources.getString(R.string.contraseñaLongitudError))
+            return false
+        }
+
+        //Comprueba que el email introducido es valido (ojo, puede no existir pero ser valido)
+        val patronEmail: Pattern = Patterns.EMAIL_ADDRESS
+
+        if(!patronEmail.matcher(email).matches()){
+            showAlert(resources.getString(R.string.emailNoValido))
             return false
         }
 

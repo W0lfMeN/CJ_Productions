@@ -7,11 +7,16 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cjproductions.R
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_registrarse.*
+import java.util.HashSet
 import java.util.regex.Pattern
 
 
 class Registrarse : AppCompatActivity() {
+
+    private val db=FirebaseFirestore.getInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registrarse)
@@ -25,7 +30,7 @@ class Registrarse : AppCompatActivity() {
         //Boton registrarse
 
         btRegistrarse.setOnLongClickListener{
-            Toast.makeText(this, R.string.textoBtLogin, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.textoBtRegistrarse, Toast.LENGTH_SHORT).show()
             true
         }
 
@@ -38,7 +43,14 @@ class Registrarse : AppCompatActivity() {
             ).addOnCompleteListener{
 
                 if(it.isSuccessful){
+                    val textoDefault:String=resources.getString(R.string.etValorNoProporcionado)
+
                     Toast.makeText(this, R.string.registroCorrecto, Toast.LENGTH_LONG).show()
+
+                    //Se crea la coleccion junto con el registro
+                    db.collection("Usuarios").document(etEmail.text.toString()).
+                    set(hashMapOf("Nombre" to textoDefault, "Telefono" to textoDefault))
+
                     onBackPressed()
                 }else{
                     showAlert("Ha ocurrido un error durante la creacion del usuario")

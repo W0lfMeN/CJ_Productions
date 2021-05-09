@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cjproductions.R
 import com.google.firebase.auth.FirebaseAuth
@@ -19,24 +20,27 @@ class PerfilUsuarios : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_perfil_usuarios)
 
+        title = "Mi perfil"
+
         ponerListeners()
 
         rellenarCampos()
 
     }
 
+
     private fun ponerListeners(){
 
         //BOTON CERRAR SESION
 
         btCerrarSesion.setOnLongClickListener{
-            Toast.makeText(this,R.string.textoBtCerrarSesion, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.textoBtCerrarSesion, Toast.LENGTH_SHORT).show()
             true
         }
 
         btCerrarSesion.setOnClickListener{
             FirebaseAuth.getInstance().signOut()
-            Toast.makeText(this,R.string.sesionCerradaCorrectamente, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.sesionCerradaCorrectamente, Toast.LENGTH_SHORT).show()
 
             borrarPreferencias() //borra el correo que hay en el archivo de preferencias
 
@@ -45,12 +49,12 @@ class PerfilUsuarios : AppCompatActivity() {
 
         //BOTON EDITAR PERFIL
 
-        btEditarImagen.setOnLongClickListener {
-            Toast.makeText(this,R.string.textoBtEditarPerfil, Toast.LENGTH_SHORT).show()
+        btEditarPerfil.setOnLongClickListener {
+            Toast.makeText(this, R.string.textoBtEditarPerfil, Toast.LENGTH_SHORT).show()
             true
         }
 
-        btEditarImagen.setOnClickListener {
+        btEditarPerfil.setOnClickListener {
             val intent: Intent = Intent(this, EditarUsuarios::class.java)
             startActivity(intent)
         }
@@ -58,12 +62,12 @@ class PerfilUsuarios : AppCompatActivity() {
         //BOTON CAMBIAR CONTRASEÑA
 
         btCambiarContrasena.setOnLongClickListener {
-            Toast.makeText(this,R.string.textoBtEditarContrasena, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.textoBtEditarContrasena, Toast.LENGTH_SHORT).show()
             true
         }
 
         btCambiarContrasena.setOnClickListener {
-
+            cambiarContrasena()
         }
 
     }
@@ -79,7 +83,6 @@ class PerfilUsuarios : AppCompatActivity() {
 
             //Ahora rellenamos los demás campos
             db.collection("Usuarios").document(tvCorreo.text.toString()).get().addOnCompleteListener {
-                Toast.makeText(this,it.result?.get("Nombre").toString(), Toast.LENGTH_SHORT).show()
                 tvNombre.setText(it.result?.get("Nombre").toString())
                 tvTelefono.setText(it.result?.get("Telefono").toString())
             }
@@ -104,5 +107,29 @@ class PerfilUsuarios : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart()
         rellenarCampos()
+    }
+
+    private fun cambiarContrasena(){
+
+        val prefs: SharedPreferences = getSharedPreferences(getString(R.string.preferenciasFile), Context.MODE_PRIVATE)
+
+        FirebaseAuth.getInstance().sendPasswordResetEmail(prefs.getString("email", null).toString()).addOnCompleteListener {
+
+            if (it.isSuccessful){
+                Toast.makeText(this, R.string.mensajeEditarContrasena, Toast.LENGTH_SHORT).show()
+            }else{
+                showAlert("No se ha podido enviar el correo para restablecer contraseña")
+            }
+        }
+
+    }
+
+    private fun showAlert(mensaje: String){
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("ERROR")
+        builder.setMessage(mensaje)
+        builder.setPositiveButton("Aceptar", null)
+        val dialog= builder.create()
+        dialog.show()
     }
 }

@@ -34,7 +34,6 @@
                     android:id="@+id/etEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:layout_margin="10dp"
                     android:backgroundTint="@android:color/white"
                     android:hint="@string/etEmail"
@@ -60,6 +59,13 @@
                     android:inputType="textPassword"
                     android:textColor="@android:color/white" />
             </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/btRestablecerContrasena"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:backgroundTint="#00ffffff"
+                android:text="@string/btRestablecerContrasena" />
 
             <Button
                 android:id="@+id/btLogin"

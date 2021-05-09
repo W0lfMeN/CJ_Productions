@@ -19,43 +19,46 @@ class EditarUsuarios : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_editar_usuarios)
 
+        title = "Editar Perfil"
         ponerListeners()
     }
 
-    private fun ponerListeners(){
+    private fun ponerListeners() {
         btGuardarDatos.setOnLongClickListener {
-            Toast.makeText(this,R.string.textoBtGuardar, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.textoBtGuardar, Toast.LENGTH_SHORT).show()
             true
         }
 
         btGuardarDatos.setOnClickListener {
+
             val prefs: SharedPreferences? = getSharedPreferences(getString(R.string.preferenciasFile), Context.MODE_PRIVATE)
             if (prefs != null) {
 
-                var nombre:String
-                var telefono:String
+                var nombre: String
+                var telefono: String
 
                 //Comprobar campo Nombre
                 //Se hace por si el usuario decide eliminar el nombre
-                if(etEditarNombre.text.toString()=="")
-                    nombre= resources.getString(R.string.etValorNoProporcionado)
+                if (etEditarNombre.text.toString() == "")
+                    nombre = resources.getString(R.string.etValorNoProporcionado)
                 else
-                    nombre= etEditarNombre.text.toString()
+                    nombre = etEditarNombre.text.toString()
 
                 //Comprobar campo Telefono
                 //Se hace por si el usuario decide eliminar el telefono
-                if(etEditarTelefono.text.toString()=="")
-                    telefono=resources.getString(R.string.etValorNoProporcionado)
+                if (etEditarTelefono.text.toString() == "")
+                    telefono = resources.getString(R.string.etValorNoProporcionado)
                 else
-                    telefono= etEditarTelefono.text.toString()
+                    telefono = etEditarTelefono.text.toString()
 
 
 
                 db.collection("Usuarios").document(prefs.getString("email", null).toString())
-                    .set(hashMapOf("Nombre" to nombre, "Telefono" to telefono))
+                        .set(hashMapOf("Nombre" to nombre, "Telefono" to telefono))
             }
 
             finish() //Cierra el activity
+
         }
     }
 }

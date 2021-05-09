@@ -31,11 +31,14 @@
     <string name="btIniciarSesion">Iniciar sesión</string>
     <string name="btRegistrarse">Resistrarse</string>
     <string name="btResistrarseGoogle">Iniciar sesion con Google</string>
+    <string name="btRestablecerContrasena">He olvidado mi contraseña</string>
+    <string name="btEnviarEmailRecuperacion">Enviar correo de recuperacion</string>
 
     <!-- Texto para los botones de Inicio de sesion -->
     <string name="textoBtLogin">Pulsa para iniciar sesión</string>
     <string name="textoBtRegistrarse">Pulsa para registrarte</string>
     <string name="textoBtRegistrarseGoogle">Pulsa para registrarte usando una cuenta de correo electronico de Google</string>
+    <string name="textoEtRestablecerContrasena">Introduce el correo</string>
 
     <!-- String para la notificar que un campo está vacío -->
     <string name="error_campos">Rellene el campo %s</string>
@@ -68,6 +71,8 @@
     <string name="textoBtCerrarSesion">Pulsa para cerrar sesión</string>
     <string name="textoBtEditarPerfil">Pulsa para editar tu perfil</string>
     <string name="textoBtEditarContrasena">Pulsa para cambiar la contraseña</string>
+
+    <string name="mensajeEditarContrasena">Se ha enviado un correo para restablecer la contraseña</string>
 
     <!--/////////////////////// EDITAR PERFIL ////////////////////// -->
     <string name="btCambiarImagen">Editar imagen</string>
