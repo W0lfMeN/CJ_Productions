@@ -80,5 +80,12 @@
     <string name="textoBtGuardar">Pulsa para guardar los datos</string>
     <string name="textoBtCambiarImagen">Pulsa para editar la foto de perfil</string>
 
+    <!-- DIALOGO EDITAR FOTO-->
+    <string name="textoDialogo">Actualizar logo de perfil</string>
+    <string name="btCamara">Cámara</string>
+    <string name="btDefecto">Por defecto</string>
+    <string name="btGaleria">Galería</string>
+    <string name="dialogoTitulo">Elegir foto</string>
+
 
 </resources>

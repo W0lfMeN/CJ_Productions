@@ -1,11 +1,11 @@
 package com.example.cjproductions
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.cjproductions.login.InicioSesion
 import com.example.cjproductions.login.Registrarse
 import com.example.cjproductions.perfilUsuarios.PerfilUsuarios
-import com.google.firebase.auth.FirebaseAuth
+import dmax.dialog.SpotsDialog
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -63,8 +63,20 @@ class MainActivity : AppCompatActivity() {
         }
 
         mainBtPerfil.setOnClickListener {
+            val dialog: AlertDialog = SpotsDialog.Builder()
+                .setContext(this)
+                .setMessage("Cargando perfil")
+                .setCancelable(false)
+                .build()
+
+            dialog.show()
+
+
             val intent: Intent = Intent(this, PerfilUsuarios::class.java)
             startActivity(intent)
+
+            dialog.dismiss()
+
         }
 
     }

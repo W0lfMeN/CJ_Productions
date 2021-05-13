@@ -61,4 +61,10 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
     //FIRESTORE
     implementation 'com.google.firebase:firebase-firestore-ktx:22.1.2'
+    //PICASSO libreria
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    //FIREBASE STORAGE
+    implementation 'com.google.firebase:firebase-storage-ktx'
+    //Libreria Alert Dialog
+    implementation 'com.github.d-max:spots-dialog:1.1@aar'
 }

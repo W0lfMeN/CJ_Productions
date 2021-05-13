@@ -1,5 +1,6 @@
 package com.example.cjproductions.login
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
@@ -8,14 +9,18 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.cjproductions.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_editar_usuarios.*
 import kotlinx.android.synthetic.main.activity_registrarse.*
-import java.util.HashSet
 import java.util.regex.Pattern
 
 
 class Registrarse : AppCompatActivity() {
 
     private val db=FirebaseFirestore.getInstance()
+    private val storage= FirebaseStorage.getInstance().reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,12 +49,15 @@ class Registrarse : AppCompatActivity() {
 
                 if(it.isSuccessful){
                     val textoDefault:String=resources.getString(R.string.etValorNoProporcionado)
+                    val rutaImagen = FirebaseAuth.getInstance().currentUser.uid
+
+                    subirImagenDefecto() //se sube la imagen por defecto
 
                     Toast.makeText(this, R.string.registroCorrecto, Toast.LENGTH_LONG).show()
 
                     //Se crea la coleccion junto con el registro
                     db.collection("Usuarios").document(etEmail.text.toString()).
-                    set(hashMapOf("Nombre" to textoDefault, "Telefono" to textoDefault))
+                    set(hashMapOf("Nombre" to textoDefault, "Telefono" to textoDefault, "Imagen" to rutaImagen))
 
                     onBackPressed()
                 }else{
@@ -123,5 +131,21 @@ class Registrarse : AppCompatActivity() {
         builder.setPositiveButton("Aceptar", null)
         val dialog= builder.create()
         dialog.show()
+    }
+
+    /**
+     * Metodo que subirá la imagen que ha elegido el usuario a la base de datos
+     */
+    private fun subirImagenDefecto(){
+        val referencia = storage.child("usuarios/"+FirebaseAuth.getInstance().currentUser.uid+"/profile.jpg")
+        referencia.putFile(Uri.parse("android.resource://${packageName}/${R.mipmap.user_default}")).addOnSuccessListener {
+            @Override fun onSuccess(taskSnapshot: UploadTask.TaskSnapshot){
+                referencia.downloadUrl.addOnSuccessListener {
+                    @Override fun onSuccess(uri: Uri){
+                        Picasso.get().load(uri).into(editarImagen)
+                    }
+                }
+            }
+        }
     }
 }

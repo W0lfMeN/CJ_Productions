@@ -1,6 +1,7 @@
 package com.example.cjproductions.login
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
@@ -17,6 +18,10 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_editar_usuarios.*
 import kotlinx.android.synthetic.main.activity_inicio_sesion.*
 import java.util.regex.Pattern
 
@@ -24,6 +29,7 @@ import java.util.regex.Pattern
 class InicioSesion : AppCompatActivity() {
 
     private val db = FirebaseFirestore.getInstance()
+    private val storage= FirebaseStorage.getInstance().reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -128,9 +134,16 @@ class InicioSesion : AppCompatActivity() {
                             db.collection("Usuarios").document(account.email.toString()).get().addOnCompleteListener {
                                 if (it.isComplete){
 
-                                    if (it.getResult()?.exists() != true)
-                                        db.collection("Usuarios").document(account.email.toString()).
-                                        set(hashMapOf("Nombre" to textoDefault, "Telefono" to textoDefault))
+                                    if (it.getResult()?.exists() != true) {
+                                        val rutaImagen = FirebaseAuth.getInstance().currentUser.uid
+
+                                        subirImagenDefecto() //Se sube la imagen por defecto
+
+
+                                        db.collection("Usuarios").document(account.email.toString())
+                                            .set(hashMapOf("Nombre" to textoDefault, "Telefono" to textoDefault, "Imagen" to rutaImagen))
+
+                                    }
                                 }
                             }
 
@@ -194,6 +207,22 @@ class InicioSesion : AppCompatActivity() {
         builder.setPositiveButton("Aceptar", null)
         val dialog= builder.create()
         dialog.show()
+    }
+
+    /**
+     * Metodo que subirá la imagen que ha elegido el usuario a la base de datos
+     */
+    private fun subirImagenDefecto(){
+        val referencia = storage.child("usuarios/"+FirebaseAuth.getInstance().currentUser.uid+"/profile.jpg")
+        referencia.putFile(Uri.parse("android.resource://${packageName}/${R.mipmap.user_default}")).addOnSuccessListener {
+            @Override fun onSuccess(taskSnapshot: UploadTask.TaskSnapshot){
+                referencia.downloadUrl.addOnSuccessListener {
+                    @Override fun onSuccess(uri: Uri){
+                        Picasso.get().load(uri).into(editarImagen)
+                    }
+                }
+            }
+        }
     }
 
 }

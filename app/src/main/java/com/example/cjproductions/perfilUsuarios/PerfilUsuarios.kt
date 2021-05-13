@@ -1,30 +1,48 @@
 package com.example.cjproductions.perfilUsuarios
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cjproductions.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.squareup.picasso.Picasso
+import dmax.dialog.SpotsDialog
 import kotlinx.android.synthetic.main.activity_perfil_usuarios.*
 
 class PerfilUsuarios : AppCompatActivity() {
 
     private val db = FirebaseFirestore.getInstance()
+    private val storage= FirebaseStorage.getInstance().reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_perfil_usuarios)
+
+        val dialog: AlertDialog = SpotsDialog.Builder()
+            .setContext(this)
+            .setMessage("Cargando perfil")
+            .setCancelable(false)
+            .build()
+
+        dialog.show()
+
 
         title = "Mi perfil"
 
         ponerListeners()
 
         rellenarCampos()
+
+        cargarImagen()
+
+
+        dialog.dismiss()
 
     }
 
@@ -49,12 +67,12 @@ class PerfilUsuarios : AppCompatActivity() {
 
         //BOTON EDITAR PERFIL
 
-        btEditarPerfil.setOnLongClickListener {
+        btEditarImagen.setOnLongClickListener {
             Toast.makeText(this, R.string.textoBtEditarPerfil, Toast.LENGTH_SHORT).show()
             true
         }
 
-        btEditarPerfil.setOnClickListener {
+        btEditarImagen.setOnClickListener {
             val intent: Intent = Intent(this, EditarUsuarios::class.java)
             startActivity(intent)
         }
@@ -76,6 +94,7 @@ class PerfilUsuarios : AppCompatActivity() {
      * Funcion que se encarga de rellenar los datos del activity con la informacion correspondiente
      */
     private fun rellenarCampos(){
+
         val prefs: SharedPreferences? = getSharedPreferences(getString(R.string.preferenciasFile), Context.MODE_PRIVATE)
         //Rellenar el campo de correo
         if (prefs != null) {
@@ -87,6 +106,25 @@ class PerfilUsuarios : AppCompatActivity() {
                 tvTelefono.setText(it.result?.get("Telefono").toString())
             }
         }
+    }
+
+    private fun cargarImagen(){
+        val dialog: AlertDialog = SpotsDialog.Builder()
+            .setContext(this)
+            .setMessage("Cargando perfil")
+            .setCancelable(false)
+            .build()
+
+        dialog.show()
+
+        val perfilReferencia= storage.child("usuarios/"+FirebaseAuth.getInstance().currentUser.uid+"/profile.jpg")
+
+        //Coloca la imagen desde el almacenamiento de firebase
+        perfilReferencia.downloadUrl.addOnSuccessListener {
+            Picasso.get().load(it).resize(150,150).centerCrop().into(imagenUsuario)
+        }
+
+        dialog.dismiss()
     }
 
     /**
@@ -106,7 +144,9 @@ class PerfilUsuarios : AppCompatActivity() {
      */
     override fun onRestart() {
         super.onRestart()
+
         rellenarCampos()
+        cargarImagen()
     }
 
     private fun cambiarContrasena(){
