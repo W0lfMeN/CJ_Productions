@@ -24,6 +24,16 @@
     <!-- String que aparece cuando se cierra sesion correctamente -->
     <string name="sesionCerradaCorrectamente">Sesión cerrada correctamente</string>
 
+    <!-- String que aparece cuando no hay sesión inicada y se decide pulsar en atencion cliente -->
+    <string name="noSesionIniciada">Debe de iniciar sesión para acceder</string>
+
+    <!-- String que aparece cuando se va a iniciar un chat con una cuenta de usuario -->
+    <string name="alertChatUser">Si cierra la ventana del chat, tendrá que volver a entrar en cola. ¿Esta seguro?</string>
+
+    <!-- valores del show alert -->
+    <string name="aceptar">Si</string>
+    <string name="cancelar">No</string>
+
     <!-- /////////////////////// Inicio Sesion y Registrarse ////////////////////// -->
     <string name="etEmail">Email</string>
     <string name="etContraseña">Contraseña</string>

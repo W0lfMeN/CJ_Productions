@@ -1,6 +1,5 @@
 package com.example.cjproductions
 
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -11,15 +10,30 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.cjproductions.atencionCliente.activities.ChatActivity
+import com.example.cjproductions.atencionCliente.admin.MenuPrincipalAdmin
+import com.example.cjproductions.atencionCliente.models.Chat
 import com.example.cjproductions.login.InicioSesion
 import com.example.cjproductions.login.Registrarse
 import com.example.cjproductions.perfilUsuarios.PerfilUsuarios
-import dmax.dialog.SpotsDialog
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
+
+    /**
+     * Variable que almacenará los correos pertenecientes a los desarrolladores de la aplicacion
+     * Se usará para saber si la cuenta iniciada es de un desarrollador o no
+     * Para saber eso, se comparará el contenido del array con el email perteneciente al archivo de persistencia
+     */
+    val correosDesarrolladores = arrayListOf<String>("carlosjmsanchez@gmail.com")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         //Thread.sleep(4000)
@@ -36,7 +50,6 @@ class MainActivity : AppCompatActivity() {
 
         //Llamamos al metodo que se encarga de poner y reproducir el video de fondo del activity
         iniciarBackgroundVideo()
-
     }
 
     /**
@@ -63,20 +76,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         mainBtPerfil.setOnClickListener {
-            val dialog: AlertDialog = SpotsDialog.Builder()
-                .setContext(this)
-                .setMessage("Cargando perfil")
-                .setCancelable(false)
-                .build()
-
-            dialog.show()
-
-
             val intent: Intent = Intent(this, PerfilUsuarios::class.java)
             startActivity(intent)
-
-            dialog.dismiss()
-
         }
 
     }
@@ -135,7 +136,31 @@ class MainActivity : AppCompatActivity() {
 
             //Al pulsarse se llamará a la clase de Atencion Al cliente
             R.id.AtencionCliente ->{
+                val prefs: SharedPreferences = getSharedPreferences(getString(R.string.preferenciasFile), Context.MODE_PRIVATE)
 
+                /**
+                 * Si el usuario del archivo de persistencia es distinto de null
+                 * quiere decir que hay una cuenta iniciada. En caso contrario no dejará iniciar el activity
+                 * mostrando un mensaje informando del problema
+                 *
+                 * En caso de existir un correo en el archivo de persistencia,
+                 * este se comprara con el array en el que están contenidos los correos de los administradores.
+                 *
+                 * Si el correo coincide con uno de los que hay en el array, quiere decir que es un admin
+                 * y por lo tanto iniciará el activity que muestra el menú de chats del admin
+                 *
+                 * Por el contrario, si no coincide con ninguno, quiere decir que es un usuario normal
+                 * y se llamará al metodo gestionChatUsuario para crear el chat
+                 */
+                if(prefs.getString("email",null)!=null){
+                    if(correosDesarrolladores.contains(prefs.getString("email",null).toString())){
+                        val intent = Intent(this, MenuPrincipalAdmin::class.java)
+                        startActivity(intent)
+                    }else{
+                        showAlert(resources.getString(R.string.alertChatUser))
+                    }
+                }else
+                    Toast.makeText(this,R.string.noSesionIniciada, Toast.LENGTH_SHORT).show()
             }
 
             //Al pulsarse se llamará a la clase de Novedades
@@ -245,4 +270,59 @@ class MainActivity : AppCompatActivity() {
             mostrarOcultarBtVerPerfil(1)
         }
     }
+
+    /**
+     * Metodo que gestiona y crea del chat bajo la vista del usuario
+     */
+    private fun gestionChatUsuario(){
+
+        val db = Firebase.firestore
+
+        //guardamos en la variable 'user' el correo que se encuentre en la persistencia
+        val prefs: SharedPreferences = getSharedPreferences(getString(R.string.preferenciasFile), Context.MODE_PRIVATE)
+        val user= prefs.getString("email",null).toString()
+
+        //Damos valores a las variables que se necesitan para crear el objeto Chat
+        val chatId = UUID.randomUUID().toString()
+        val otherUser = correosDesarrolladores.random() //se asigna un desarrollador aleatorio
+        val users = listOf(user, otherUser)
+        val laFecha = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")).toString()
+
+        //Creamos el objeto Chat con sus valores
+        val chat = Chat(
+                id = chatId,
+                name = "Chat con $user",
+                users = users,
+                fecha = laFecha
+        )
+
+        //Añadimos la coleccion del Chat tanto en una coleccion principal, como en una coleccion dentro de cada usuario que interviene
+        db.collection("Chats").document(chatId).set(chat)
+        db.collection("Usuarios").document(user).collection("Chats").document(chatId).set(chat)
+        db.collection("Usuarios").document(otherUser).collection("Chats").document(chatId).set(chat)
+
+        //Iniciamos el activity pasando los datos importantes como son el id y el usuario
+        val intent = Intent(this, ChatActivity::class.java)
+        intent.putExtra("chatId", chatId)
+        intent.putExtra("user", user)
+        startActivity(intent)
+    }
+
+    /**
+     * Funcion que genera un mensaje de alerta en la pantalla
+     * con el texto que se le pase por parametro
+     */
+    private fun showAlert(mensaje: String){
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(mensaje)
+        builder.setPositiveButton(resources.getString(R.string.aceptar)) {view, _ ->
+            gestionChatUsuario()
+        }
+        builder.setNegativeButton(resources.getString(R.string.cancelar)) {view, _ ->
+            view.dismiss()
+        }
+        val dialog= builder.create()
+        dialog.show()
+    }
 }
+

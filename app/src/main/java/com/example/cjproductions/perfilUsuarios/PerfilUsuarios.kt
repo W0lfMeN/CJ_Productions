@@ -21,17 +21,16 @@ class PerfilUsuarios : AppCompatActivity() {
     private val storage= FirebaseStorage.getInstance().reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_perfil_usuarios)
-
         val dialog: AlertDialog = SpotsDialog.Builder()
-            .setContext(this)
-            .setMessage("Cargando perfil")
-            .setCancelable(false)
-            .build()
+                .setContext(this)
+                .setMessage("Cargando perfil")
+                .setCancelable(false)
+                .build()
 
         dialog.show()
 
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_perfil_usuarios)
 
         title = "Mi perfil"
 
@@ -105,26 +104,21 @@ class PerfilUsuarios : AppCompatActivity() {
                 tvNombre.setText(it.result?.get("Nombre").toString())
                 tvTelefono.setText(it.result?.get("Telefono").toString())
             }
+
+
         }
     }
 
     private fun cargarImagen(){
-        val dialog: AlertDialog = SpotsDialog.Builder()
-            .setContext(this)
-            .setMessage("Cargando perfil")
-            .setCancelable(false)
-            .build()
-
-        dialog.show()
 
         val perfilReferencia= storage.child("usuarios/"+FirebaseAuth.getInstance().currentUser.uid+"/profile.jpg")
 
         //Coloca la imagen desde el almacenamiento de firebase
-        perfilReferencia.downloadUrl.addOnSuccessListener {
-            Picasso.get().load(it).resize(150,150).centerCrop().into(imagenUsuario)
+        if(perfilReferencia!=null) {
+            perfilReferencia.downloadUrl.addOnSuccessListener {
+                Picasso.get().load(it).resize(150, 150).centerCrop().into(imagenUsuario)
+            }
         }
-
-        dialog.dismiss()
     }
 
     /**
@@ -143,10 +137,20 @@ class PerfilUsuarios : AppCompatActivity() {
      * cuando se vuelva desde el activity de editar usuarios
      */
     override fun onRestart() {
+        val dialog: AlertDialog = SpotsDialog.Builder()
+                .setContext(this)
+                .setMessage("Cargando perfil")
+                .setCancelable(false)
+                .build()
+
+        dialog.show()
+
         super.onRestart()
 
         rellenarCampos()
         cargarImagen()
+
+        dialog.dismiss()
     }
 
     private fun cambiarContrasena(){
