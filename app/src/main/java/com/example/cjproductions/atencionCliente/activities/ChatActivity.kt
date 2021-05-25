@@ -22,8 +22,10 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
+
         intent.getStringExtra("chatId")?.let { chatId = it }
         intent.getStringExtra("user")?.let { user = it }
+        intent.getStringExtra("users").let { title = "Admin: $it" }
 
         if(chatId.isNotEmpty() && user.isNotEmpty()) {
             initViews()
@@ -80,7 +82,13 @@ class ChatActivity : AppCompatActivity() {
      * al momento de finalizar el activity
      */
     override fun onBackPressed() {
-        showAlert(resources.getString(R.string.alertChatUser))
+        val correosDesarrolladores = arrayListOf<String>("carlosjmsanchez@gmail.com")
+
+        //Este if evitará que aparezca el dialogo de cerrar ventana cuando el correo que hay es de un admin
+        if(!correosDesarrolladores.contains(user))
+            showAlert(resources.getString(R.string.alertChatUser))
+        else
+            finish()
     }
 
     /**
@@ -90,7 +98,7 @@ class ChatActivity : AppCompatActivity() {
     private fun showAlert(mensaje: String){
         val builder = AlertDialog.Builder(this)
         builder.setMessage(mensaje)
-        builder.setPositiveButton(resources.getString(R.string.aceptar)) {view, _ ->
+        builder.setPositiveButton(resources.getString(R.string.aceptar)) { _, _ ->
             finish()
         }
         builder.setNegativeButton(resources.getString(R.string.cancelar)) {view, _ ->

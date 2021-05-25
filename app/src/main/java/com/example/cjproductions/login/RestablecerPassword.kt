@@ -15,7 +15,7 @@ class RestablecerPassword : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_restablecer_password)
 
-        title = "Restablecer contraseña"
+        title = resources.getString(R.string.tituloRestablecerPassword)
 
 
         ponerListeners()

@@ -47,7 +47,7 @@ class EditarUsuarios : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_editar_usuarios)
 
-        title = "Editar Perfil"
+        title = resources.getString(R.string.tituloEditarPerfil)
         ponerListeners()
 
         cargarImagen()

@@ -1,6 +1,15 @@
 <resources>
     <string name="app_name">CJ Productions</string>
 
+    <!-- /////////////////////// TITULOS DE ACTIVITIS ////////////////////// -->
+    <string name="tituloMenuComprarProductos">Comprar productos</string>
+    <string name="tituloIniciarSesion">Iniciar Sesion</string>
+    <string name="tituloRegistrarse">Registrarse</string>
+    <string name="tituloRestablecerPassword">Restablecer contraseña</string>
+    <string name="tituloEditarPerfil">Editar Perfil</string>
+    <string name="tituloPerfilUsuarios">Mi perfil</string>
+    <string name="tituloMenuSoporte">Atención al cliente</string>
+
     <!-- Nombre del SharedPreferences-->
     <string name="preferenciasFile">com.example.cjproductions.PREFERENCIAS</string>
 
@@ -96,6 +105,9 @@
     <string name="btDefecto">Por defecto</string>
     <string name="btGaleria">Galería</string>
     <string name="dialogoTitulo">Elegir foto</string>
+
+    <!-- /////////////////////// COMPRAR PRODUCTOS /////////////////////// -->
+    <string name="tvNombre">Nombre</string>
 
 
 </resources>

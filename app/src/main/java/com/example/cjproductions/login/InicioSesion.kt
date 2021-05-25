@@ -34,7 +34,7 @@ class InicioSesion : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inicio_sesion)
-        title="Iniciar Sesion" //Cambia el titulo de la ventana
+        title=resources.getString(R.string.tituloIniciarSesion) //Cambia el titulo de la ventana
         ponerListeners()
     }
 

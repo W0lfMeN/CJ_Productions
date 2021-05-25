@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.cjproductions.atencionCliente.activities.ChatActivity
 import com.example.cjproductions.atencionCliente.admin.MenuPrincipalAdmin
 import com.example.cjproductions.atencionCliente.models.Chat
+import com.example.cjproductions.comprarProductos.MenuPrincipalComprarProductos
 import com.example.cjproductions.login.InicioSesion
 import com.example.cjproductions.login.Registrarse
 import com.example.cjproductions.perfilUsuarios.PerfilUsuarios
@@ -171,8 +172,8 @@ class MainActivity : AppCompatActivity() {
 
             //Al pulsarse se llamará a la clase de Comprar productos
             R.id.ComprarProductos ->{
-                //val intent: Intent = Intent(this, "ClaseJava"::class.java)
-                //startActivity(intent)
+                val intent: Intent = Intent(this, MenuPrincipalComprarProductos::class.java)
+                startActivity(intent)
             }
 
             //Al pulsarse se llamará a la clase de Sobre nosotros

@@ -32,7 +32,7 @@ class PerfilUsuarios : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_perfil_usuarios)
 
-        title = "Mi perfil"
+        title = resources.getString(R.string.tituloPerfilUsuarios)
 
         ponerListeners()
 
@@ -101,7 +101,7 @@ class PerfilUsuarios : AppCompatActivity() {
 
             //Ahora rellenamos los demás campos
             db.collection("Usuarios").document(tvCorreo.text.toString()).get().addOnCompleteListener {
-                tvNombre.setText(it.result?.get("Nombre").toString())
+                tvTitulo.setText(it.result?.get("Nombre").toString())
                 tvTelefono.setText(it.result?.get("Telefono").toString())
             }
 

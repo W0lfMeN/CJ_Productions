@@ -26,7 +26,7 @@ class Registrarse : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registrarse)
 
-        title = "Registrarse"
+        title = resources.getString(R.string.tituloRegistrarse)
 
         ponerListeners()
     }

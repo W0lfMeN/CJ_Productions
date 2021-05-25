@@ -35,7 +35,7 @@
         app:srcCompat="@mipmap/user_default" />
 
     <TextView
-        android:id="@+id/tvNombre"
+        android:id="@+id/tvTitulo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -128,7 +128,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvNombre"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitulo"
         app:srcCompat="@drawable/ic_email_black_24dp" />
 
     <ImageView

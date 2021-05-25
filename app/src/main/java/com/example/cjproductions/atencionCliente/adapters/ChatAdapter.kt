@@ -23,9 +23,7 @@ class ChatAdapter(val chatClick: (Chat) -> Unit): RecyclerView.Adapter<ChatAdapt
      * Metodo que crea la vista del recycler pasandole el layout correspondiente
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
-        return ChatViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_chat, parent,false)
-        )
+        return ChatViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_chat, parent,false))
     }
 
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {

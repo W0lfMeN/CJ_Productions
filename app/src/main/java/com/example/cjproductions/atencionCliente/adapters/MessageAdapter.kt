@@ -22,13 +22,7 @@ class MessageAdapter(private val user: String): RecyclerView.Adapter<MessageAdap
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
-        return MessageViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.item_message,
-                parent,
-                false
-            )
-        )
+        return MessageViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_message, parent,false))
     }
 
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {

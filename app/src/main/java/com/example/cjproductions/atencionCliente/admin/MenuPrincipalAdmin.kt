@@ -24,6 +24,8 @@ class MenuPrincipalAdmin : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu_principal_admin)
 
+        title = resources.getString(R.string.tituloMenuSoporte)
+
         //guardamos en la variable 'user' el correo que se encuentre en la persistencia
         val prefs: SharedPreferences = getSharedPreferences(getString(R.string.preferenciasFile), Context.MODE_PRIVATE)
         user= prefs.getString("email",null).toString()
@@ -78,6 +80,7 @@ class MenuPrincipalAdmin : AppCompatActivity() {
         val intent = Intent(this, ChatActivity::class.java)
         intent.putExtra("chatId", chat.id)
         intent.putExtra("user", user)
+        intent.putExtra("users",chat.users[1])
         startActivity(intent)
     }
 }
