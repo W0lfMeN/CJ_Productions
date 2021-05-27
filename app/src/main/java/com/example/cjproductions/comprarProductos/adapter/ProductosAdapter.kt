@@ -8,7 +8,7 @@ import com.example.cjproductions.R
 import com.example.cjproductions.comprarProductos.modelo.Productos
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.producto_item.view.*
+import kotlinx.android.synthetic.main.item_producto.view.*
 
 class ProductosAdapter(val productoClick: (Productos) -> Unit): RecyclerView.Adapter<ProductosAdapter.ProductosViewHolder>() {
 
@@ -22,7 +22,7 @@ class ProductosAdapter(val productoClick: (Productos) -> Unit): RecyclerView.Ada
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductosViewHolder {
-        return ProductosViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.producto_item, parent, false))
+        return ProductosViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_producto, parent, false))
     }
 
     override fun onBindViewHolder(holder: ProductosViewHolder, position: Int) {

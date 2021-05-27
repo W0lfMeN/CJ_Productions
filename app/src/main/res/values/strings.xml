@@ -14,7 +14,7 @@
     <string name="preferenciasFile">com.example.cjproductions.PREFERENCIAS</string>
 
     <!-- /////////////////////// MainActivity ////////////////////// -->
-    <string name="mainBtSaberMas">Saber mas</string>
+    <string name="mainBtComprar">Comprar</string>
     <string name="mainBtIniciarSesion">Iniciar sesión</string>
     <string name="mainBtRegistrarse">Registrarse</string>
     <string name="mainBtCerrarSesion">Cerrar Sesión</string>

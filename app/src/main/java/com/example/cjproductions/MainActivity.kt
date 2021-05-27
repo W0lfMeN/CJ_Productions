@@ -16,8 +16,10 @@ import com.example.cjproductions.atencionCliente.activities.ChatActivity
 import com.example.cjproductions.atencionCliente.admin.MenuPrincipalAdmin
 import com.example.cjproductions.atencionCliente.models.Chat
 import com.example.cjproductions.comprarProductos.MenuPrincipalComprarProductos
+import com.example.cjproductions.comprarProductos.activity.ProductosActivity
 import com.example.cjproductions.login.InicioSesion
 import com.example.cjproductions.login.Registrarse
+import com.example.cjproductions.novedades.MenuPrincipalNovedades
 import com.example.cjproductions.perfilUsuarios.PerfilUsuarios
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -34,7 +36,7 @@ class MainActivity : AppCompatActivity() {
      * Se usará para saber si la cuenta iniciada es de un desarrollador o no
      * Para saber eso, se comparará el contenido del array con el email perteneciente al archivo de persistencia
      */
-    val correosDesarrolladores = arrayListOf<String>("carlosjmsanchez@gmail.com")
+    private val correosDesarrolladores = arrayListOf("carlosjmsanchez@gmail.com")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         //Thread.sleep(4000)
@@ -59,11 +61,20 @@ class MainActivity : AppCompatActivity() {
     private fun ponerListeners(){
         //Boton Saber Mas
 
-        btSaberMas.setOnClickListener{
+        btComprar.setOnClickListener{
             //Aqui se llamará a la pantalla de comprar producto
+            //Asignamos los parametros que se van a transferir al activity
+            val nombre= "Days Gone"
+            val enlace= "https://store.steampowered.com/app/1259420/Days_Gone/"
+
+            val intent: Intent = Intent(this, ProductosActivity::class.java)
+            intent.putExtra("enlace", enlace)
+            intent.putExtra("nombre",nombre)
+            startActivity(intent)
+
         }
 
-        btSaberMas.setOnLongClickListener{
+        btComprar.setOnLongClickListener{
             Toast.makeText(this,R.string.mainTextoBtSaberMas, Toast.LENGTH_SHORT).show()
 
             true
@@ -166,8 +177,8 @@ class MainActivity : AppCompatActivity() {
 
             //Al pulsarse se llamará a la clase de Novedades
             R.id.Novedades ->{
-                //val intent: Intent = Intent(this, "ClaseJava"::class.java)
-                //startActivity(intent)
+                val intent: Intent = Intent(this, MenuPrincipalNovedades::class.java)
+                startActivity(intent)
             }
 
             //Al pulsarse se llamará a la clase de Comprar productos
@@ -227,18 +238,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
-    /**
-     * Metodo que borra el contenido del fichero de persistencia
-     */
-    fun borrarPreferencias(){
-        val prefs: SharedPreferences.Editor? = getSharedPreferences(getString(R.string.preferenciasFile), Context.MODE_PRIVATE).edit()
-        if (prefs != null) {
-            prefs.clear()
-            prefs.apply()
-        }
-    }
-
     /**
      * Metodo que muestra u oculta el boton de iniciar sesion segun el parametro
      *
@@ -247,10 +246,10 @@ class MainActivity : AppCompatActivity() {
      */
     fun mostrarOcultarBtVerPerfil(valor:Int){
         if(valor==1)
-            mainBtPerfil.setVisibility(View.VISIBLE)
+            mainBtPerfil.visibility = View.VISIBLE
 
         if(valor==0)
-            mainBtPerfil.setVisibility(View.INVISIBLE)
+            mainBtPerfil.visibility = View.INVISIBLE
     }
 
     /**
@@ -302,10 +301,12 @@ class MainActivity : AppCompatActivity() {
         db.collection("Usuarios").document(user).collection("Chats").document(chatId).set(chat)
         db.collection("Usuarios").document(otherUser).collection("Chats").document(chatId).set(chat)
 
-        //Iniciamos el activity pasando los datos importantes como son el id y el usuario
+
+        //Iniciamos el activity pasando los datos importantes como son el id, el usuario y el nombre del administrador
         val intent = Intent(this, ChatActivity::class.java)
         intent.putExtra("chatId", chatId)
         intent.putExtra("user", user)
+        intent.putExtra("admin", otherUser)
         startActivity(intent)
     }
 
@@ -316,7 +317,7 @@ class MainActivity : AppCompatActivity() {
     private fun showAlert(mensaje: String){
         val builder = AlertDialog.Builder(this)
         builder.setMessage(mensaje)
-        builder.setPositiveButton(resources.getString(R.string.aceptar)) {view, _ ->
+        builder.setPositiveButton(resources.getString(R.string.aceptar)) { _, _ ->
             gestionChatUsuario()
         }
         builder.setNegativeButton(resources.getString(R.string.cancelar)) {view, _ ->

@@ -80,7 +80,6 @@ class MenuPrincipalAdmin : AppCompatActivity() {
         val intent = Intent(this, ChatActivity::class.java)
         intent.putExtra("chatId", chat.id)
         intent.putExtra("user", user)
-        intent.putExtra("users",chat.users[1])
         startActivity(intent)
     }
 }

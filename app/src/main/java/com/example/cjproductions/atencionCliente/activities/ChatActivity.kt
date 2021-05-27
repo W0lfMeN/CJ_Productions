@@ -2,6 +2,7 @@ package com.example.cjproductions.atencionCliente.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cjproductions.atencionCliente.adapters.MessageAdapter
@@ -22,10 +23,25 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
+        var admin="" //Esta variable almacenará el nombre del administrador seleccionado
+
 
         intent.getStringExtra("chatId")?.let { chatId = it }
         intent.getStringExtra("user")?.let { user = it }
-        intent.getStringExtra("users").let { title = "Admin: $it" }
+
+        //Esta variable solo será usada si el activity es llamado desde un usuario y no un admin
+        intent.getStringExtra("admin")?.let { admin = it }
+
+        /*
+            Si el admin es distinto de "" quiere decir que es un usuario es el que ha iniciado sesion,
+            y por tanto mostrará en el titulo del activity el nombre del administrador que ha sido
+            seleccionado.
+         */
+        if (admin!=""){
+            db.collection("Usuarios").document(admin).get().addOnCompleteListener {
+                title= it.result?.get("Nombre").toString()
+            }
+        }
 
         if(chatId.isNotEmpty() && user.isNotEmpty()) {
             initViews()
