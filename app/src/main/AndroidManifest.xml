@@ -14,7 +14,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.CJProductions">
-        <activity android:name=".novedades.MenuPrincipalNovedades"></activity>
+        <activity android:name=".sobreNosotros.SobreNosotros"></activity>
+        <activity android:name=".novedades.MenuPrincipalNovedades" />
         <activity android:name=".comprarProductos.activity.ProductosActivity" />
         <activity android:name=".comprarProductos.MenuPrincipalComprarProductos" />
         <activity android:name=".atencionCliente.activities.ChatActivity" />

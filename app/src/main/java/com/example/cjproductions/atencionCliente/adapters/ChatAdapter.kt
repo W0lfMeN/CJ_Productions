@@ -11,10 +11,10 @@ import kotlinx.android.synthetic.main.item_chat.view.*
 /**
  * Clase que gestiona el recycler view de la lista de chats
  */
-class ChatAdapter(val chatClick: (Chat) -> Unit): RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
+class ChatAdapter(val chatClick: (Chat) -> Unit) : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
     var chats: List<Chat> = emptyList()
 
-    fun setData(list: List<Chat>){
+    fun setData(list: List<Chat>) {
         chats = list
         notifyDataSetChanged()
     }
@@ -23,7 +23,7 @@ class ChatAdapter(val chatClick: (Chat) -> Unit): RecyclerView.Adapter<ChatAdapt
      * Metodo que crea la vista del recycler pasandole el layout correspondiente
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
-        return ChatViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_chat, parent,false))
+        return ChatViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_chat, parent, false))
     }
 
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
@@ -40,5 +40,5 @@ class ChatAdapter(val chatClick: (Chat) -> Unit): RecyclerView.Adapter<ChatAdapt
         return chats.size
     }
 
-    class ChatViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
+    class ChatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }

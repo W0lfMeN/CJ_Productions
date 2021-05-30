@@ -21,6 +21,7 @@ import com.example.cjproductions.login.InicioSesion
 import com.example.cjproductions.login.Registrarse
 import com.example.cjproductions.novedades.MenuPrincipalNovedades
 import com.example.cjproductions.perfilUsuarios.PerfilUsuarios
+import com.example.cjproductions.sobreNosotros.SobreNosotros
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
@@ -58,32 +59,32 @@ class MainActivity : AppCompatActivity() {
     /**
      * Metodo que añade los listeners que necesitamos en este activity
      */
-    private fun ponerListeners(){
+    private fun ponerListeners() {
         //Boton Saber Mas
 
-        btComprar.setOnClickListener{
+        btComprar.setOnClickListener {
             //Aqui se llamará a la pantalla de comprar producto
             //Asignamos los parametros que se van a transferir al activity
-            val nombre= "Days Gone"
-            val enlace= "https://store.steampowered.com/app/1259420/Days_Gone/"
+            val nombre = "Days Gone"
+            val enlace = "https://store.steampowered.com/app/1259420/Days_Gone/"
 
             val intent: Intent = Intent(this, ProductosActivity::class.java)
             intent.putExtra("enlace", enlace)
-            intent.putExtra("nombre",nombre)
+            intent.putExtra("nombre", nombre)
             startActivity(intent)
 
         }
 
-        btComprar.setOnLongClickListener{
-            Toast.makeText(this,R.string.mainTextoBtSaberMas, Toast.LENGTH_SHORT).show()
+        btComprar.setOnLongClickListener {
+            Toast.makeText(this, R.string.mainTextoBtSaberMas, Toast.LENGTH_SHORT).show()
 
             true
         }
 
         //Boton Ver Perfil
 
-        mainBtPerfil.setOnLongClickListener{
-            Toast.makeText(this,R.string.mainTextoBtVerPerfil, Toast.LENGTH_SHORT).show()
+        mainBtPerfil.setOnLongClickListener {
+            Toast.makeText(this, R.string.mainTextoBtVerPerfil, Toast.LENGTH_SHORT).show()
             true
         }
 
@@ -97,7 +98,7 @@ class MainActivity : AppCompatActivity() {
     /**
      * Funcion que se encarga de buscar e iniciar el video de fondo del activity
      */
-    private fun iniciarBackgroundVideo(){
+    private fun iniciarBackgroundVideo() {
         //Instanciamos la ruta del video de fondo usando la clase Uri
         videoPrincipal.setVideoURI(Uri.parse("android.resource://${packageName}/${R.raw.video_principal}"))
 
@@ -109,7 +110,7 @@ class MainActivity : AppCompatActivity() {
          * En concreto, cuando termine el video lo que hará será volver a reproducirlo.
          * Haciendo que se reproduzca en bucle
          */
-        videoPrincipal.setOnCompletionListener(){
+        videoPrincipal.setOnCompletionListener() {
             videoPrincipal.start()
         }
     }
@@ -144,10 +145,10 @@ class MainActivity : AppCompatActivity() {
      * Metodo que les da funcionalidad a los botones del menu
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId){
+        when (item.itemId) {
 
             //Al pulsarse se llamará a la clase de Atencion Al cliente
-            R.id.AtencionCliente ->{
+            R.id.AtencionCliente -> {
                 val prefs: SharedPreferences = getSharedPreferences(getString(R.string.preferenciasFile), Context.MODE_PRIVATE)
 
                 /**
@@ -164,43 +165,43 @@ class MainActivity : AppCompatActivity() {
                  * Por el contrario, si no coincide con ninguno, quiere decir que es un usuario normal
                  * y se llamará al metodo gestionChatUsuario para crear el chat
                  */
-                if(prefs.getString("email",null)!=null){
-                    if(correosDesarrolladores.contains(prefs.getString("email",null).toString())){
+                if (prefs.getString("email", null) != null) {
+                    if (correosDesarrolladores.contains(prefs.getString("email", null).toString())) {
                         val intent = Intent(this, MenuPrincipalAdmin::class.java)
                         startActivity(intent)
-                    }else{
+                    } else {
                         showAlert(resources.getString(R.string.alertChatUser))
                     }
-                }else
-                    Toast.makeText(this,R.string.noSesionIniciada, Toast.LENGTH_SHORT).show()
+                } else
+                    Toast.makeText(this, R.string.noSesionIniciada, Toast.LENGTH_SHORT).show()
             }
 
             //Al pulsarse se llamará a la clase de Novedades
-            R.id.Novedades ->{
+            R.id.Novedades -> {
                 val intent: Intent = Intent(this, MenuPrincipalNovedades::class.java)
                 startActivity(intent)
             }
 
             //Al pulsarse se llamará a la clase de Comprar productos
-            R.id.ComprarProductos ->{
+            R.id.ComprarProductos -> {
                 val intent: Intent = Intent(this, MenuPrincipalComprarProductos::class.java)
                 startActivity(intent)
             }
 
             //Al pulsarse se llamará a la clase de Sobre nosotros
-            R.id.SobreNosotros ->{
-                //val intent: Intent = Intent(this, "ClaseJava"::class.java)
-                //startActivity(intent)
+            R.id.SobreNosotros -> {
+                val intent: Intent = Intent(this, SobreNosotros::class.java)
+                startActivity(intent)
             }
 
-            R.id.mainBtIniciarSesion ->{
+            R.id.mainBtIniciarSesion -> {
                 val intent: Intent = Intent(this, InicioSesion::class.java)
                 startActivityForResult(intent, 100)
                 //Este metodo llama al activity y cuando termine llama a onActivityResult
                 //para trabajar con los datos enviados de dicho activity
             }
 
-            R.id.mainBtRegistrarse ->{
+            R.id.mainBtRegistrarse -> {
                 val intent: Intent = Intent(this, Registrarse::class.java)
                 startActivityForResult(intent, 100)
             }
@@ -216,7 +217,7 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode==100 && resultCode == RESULT_OK){
+        if (requestCode == 100 && resultCode == RESULT_OK) {
             if (data != null) {
                 editarPersistenciaDatos(data.getStringExtra("email"))
 
@@ -244,11 +245,11 @@ class MainActivity : AppCompatActivity() {
      * 1 para MOSTRAR el botón
      * 0 para OCULTAR el botón
      */
-    fun mostrarOcultarBtVerPerfil(valor:Int){
-        if(valor==1)
+    fun mostrarOcultarBtVerPerfil(valor: Int) {
+        if (valor == 1)
             mainBtPerfil.visibility = View.VISIBLE
 
-        if(valor==0)
+        if (valor == 0)
             mainBtPerfil.visibility = View.INVISIBLE
     }
 
@@ -261,12 +262,12 @@ class MainActivity : AppCompatActivity() {
      * Por el contrario si es distinto de null, quiere decir que hay una sesion iniciada
      * y mostrará el boton de cerrar sesion llamando al metodo correspondiente
      */
-    private fun comprobarArchivoPreferencias(){
+    private fun comprobarArchivoPreferencias() {
         val prefs: SharedPreferences = getSharedPreferences(getString(R.string.preferenciasFile), Context.MODE_PRIVATE)
 
-        if(prefs.getString("email",null)==null){
+        if (prefs.getString("email", null) == null) {
             mostrarOcultarBtVerPerfil(0)
-        }else{
+        } else {
             mostrarOcultarBtVerPerfil(1)
         }
     }
@@ -274,13 +275,13 @@ class MainActivity : AppCompatActivity() {
     /**
      * Metodo que gestiona y crea del chat bajo la vista del usuario
      */
-    private fun gestionChatUsuario(){
+    private fun gestionChatUsuario() {
 
         val db = Firebase.firestore
 
         //guardamos en la variable 'user' el correo que se encuentre en la persistencia
         val prefs: SharedPreferences = getSharedPreferences(getString(R.string.preferenciasFile), Context.MODE_PRIVATE)
-        val user= prefs.getString("email",null).toString()
+        val user = prefs.getString("email", null).toString()
 
         //Damos valores a las variables que se necesitan para crear el objeto Chat
         val chatId = UUID.randomUUID().toString()
@@ -314,16 +315,16 @@ class MainActivity : AppCompatActivity() {
      * Funcion que genera un mensaje de alerta en la pantalla
      * con el texto que se le pase por parametro
      */
-    private fun showAlert(mensaje: String){
+    private fun showAlert(mensaje: String) {
         val builder = AlertDialog.Builder(this)
         builder.setMessage(mensaje)
         builder.setPositiveButton(resources.getString(R.string.aceptar)) { _, _ ->
             gestionChatUsuario()
         }
-        builder.setNegativeButton(resources.getString(R.string.cancelar)) {view, _ ->
+        builder.setNegativeButton(resources.getString(R.string.cancelar)) { view, _ ->
             view.dismiss()
         }
-        val dialog= builder.create()
+        val dialog = builder.create()
         dialog.show()
     }
 }

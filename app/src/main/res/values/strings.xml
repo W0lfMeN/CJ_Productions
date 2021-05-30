@@ -110,4 +110,12 @@
     <string name="tvNombre">Nombre</string>
 
 
+    <!-- ////////////////////// SOBRE NOSOTROS /////////////////////////// -->
+    <string name="sobreNosotros">CJ Productions es una empresa creada con el objetivo de transmitir nuevas experiencias
+                                en el mundo de los videojuegos.</string>
+
+    <string name="sobreNosotros2">Creada en Almería y con la meta de llegar a todos
+                                los rincones del mundo.</string>
+
+
 </resources>

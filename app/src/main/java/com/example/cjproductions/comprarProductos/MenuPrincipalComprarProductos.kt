@@ -12,7 +12,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_menu_principal_comprar_productos.*
 
 class MenuPrincipalComprarProductos : AppCompatActivity() {
-    private var db =FirebaseFirestore.getInstance()
+    private var db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,8 +25,8 @@ class MenuPrincipalComprarProductos : AppCompatActivity() {
     }
 
     private fun initViews() {
-        listComprarRecycler.layoutManager= LinearLayoutManager(this)
-        listComprarRecycler.adapter=
+        listComprarRecycler.layoutManager = LinearLayoutManager(this)
+        listComprarRecycler.adapter =
                 ProductosAdapter { productos ->
                     productosSelected(productos)
                 }
@@ -41,7 +41,7 @@ class MenuPrincipalComprarProductos : AppCompatActivity() {
         //Se añade este listener para capturar cualquier cambio en la base de datos y lo muestre en la pantalla
         db.collection("Productos")
                 .addSnapshotListener { productos, error ->
-                    if(error == null){
+                    if (error == null) {
                         productos?.let {
                             val listaDeProductos = it.toObjects(Productos::class.java)
 
@@ -55,7 +55,7 @@ class MenuPrincipalComprarProductos : AppCompatActivity() {
     private fun productosSelected(productos: Productos) {
         val intent = Intent(this, ProductosActivity::class.java)
         intent.putExtra("enlace", productos.enlace)
-        intent.putExtra("nombre",productos.nombre)
+        intent.putExtra("nombre", productos.nombre)
         startActivity(intent)
 
     }

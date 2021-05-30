@@ -38,7 +38,6 @@ class EditarUsuarios : AppCompatActivity() {
     private val CAMERA_ACTION_CODE: Int = 201
     private val GALERIA_ACTION_CODE: Int = 501
 
-
     private lateinit var nombre: String
     private lateinit var telefono: String
     private var imagen: Uri = Uri.parse(storage.child("usuarios/" + FirebaseAuth.getInstance().currentUser.uid + "/profile.jpg").toString())
@@ -53,12 +52,12 @@ class EditarUsuarios : AppCompatActivity() {
         cargarImagen()
     }
 
-    private fun cargarImagen(){
-        val perfilReferencia= storage.child("usuarios/"+FirebaseAuth.getInstance().currentUser.uid+"/profile.jpg")
+    private fun cargarImagen() {
+        val perfilReferencia = storage.child("usuarios/" + FirebaseAuth.getInstance().currentUser.uid + "/profile.jpg")
 
         //Coloca la imagen desde el almacenamiento de firebase
         perfilReferencia.downloadUrl.addOnSuccessListener {
-            Picasso.get().load(it).resize(150,150).centerCrop().into(editarImagen)
+            Picasso.get().load(it).resize(150, 150).centerCrop().into(editarImagen)
         }
     }
 
@@ -118,7 +117,7 @@ class EditarUsuarios : AppCompatActivity() {
 
             mAlertDialog.dialogoBtDefecto.setOnClickListener {
                 editarImagen.setImageURI(Uri.parse("android.resource://${packageName}/${R.mipmap.user_default}"))
-                imagen= Uri.parse("android.resource://${packageName}/${R.mipmap.user_default}")
+                imagen = Uri.parse("android.resource://${packageName}/${R.mipmap.user_default}")
 
                 subirImagen()
 
@@ -133,7 +132,7 @@ class EditarUsuarios : AppCompatActivity() {
         }
     }
 
-    private fun accionGaleria(){
+    private fun accionGaleria() {
         val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(gallery, GALERIA_ACTION_CODE)
     }
@@ -141,7 +140,7 @@ class EditarUsuarios : AppCompatActivity() {
     /**
      * Metodo que llamará a todo lo relacionado con la camara
      */
-    private fun accionCamara(){
+    private fun accionCamara() {
         permisoCamara() //Cuando termina esto quiere decir que se ha hecho la foto o denegado permisos
     }
 
@@ -163,9 +162,9 @@ class EditarUsuarios : AppCompatActivity() {
         }
     }
 
-    private fun abrirCamara(){
+    private fun abrirCamara() {
         val camara = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        if(camara.resolveActivity(packageManager)!=null)
+        if (camara.resolveActivity(packageManager) != null)
             startActivityForResult(camara, CAMERA_ACTION_CODE)
         else
             Toast.makeText(this, "El dispositivo no soporta esta opción", Toast.LENGTH_SHORT).show()
@@ -176,30 +175,30 @@ class EditarUsuarios : AppCompatActivity() {
         /**
          * DE PARTE DE LA CAMARA
          */
-        if(requestCode==CAMERA_ACTION_CODE && resultCode==Activity.RESULT_OK){
+        if (requestCode == CAMERA_ACTION_CODE && resultCode == Activity.RESULT_OK) {
             var datos: Bundle? = data?.extras
-            var fotoBitmap : Bitmap = datos?.get("data") as Bitmap
+            var fotoBitmap: Bitmap = datos?.get("data") as Bitmap
 
             var foto: Uri = getImageUri(this, fotoBitmap)
 
             editarImagen.setImageURI(foto)
 
             if (foto != null) {
-                imagen=foto
+                imagen = foto
             }
         }
 
         /**
          * DE PARTE DE LA GALERIA
          */
-        if (requestCode==GALERIA_ACTION_CODE){
-            if (resultCode==Activity.RESULT_OK){
+        if (requestCode == GALERIA_ACTION_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
                 var foto: Uri? = data?.data
 
                 editarImagen.setImageURI(foto)
 
                 if (foto != null) {
-                    imagen=foto
+                    imagen = foto
                 }
             }
         }
@@ -208,7 +207,7 @@ class EditarUsuarios : AppCompatActivity() {
     /**
      * Metodo que subirá la imagen que ha elegido el usuario a la base de datos
      */
-    private fun subirImagen(){
+    private fun subirImagen() {
         val referencia = storage.child("usuarios/" + FirebaseAuth.getInstance().currentUser.uid + "/profile.jpg")
         referencia.putFile(imagen!!).addOnSuccessListener {
             Log.d("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ", "Subida correcta")

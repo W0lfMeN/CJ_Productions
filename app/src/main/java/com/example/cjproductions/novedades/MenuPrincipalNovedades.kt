@@ -18,13 +18,20 @@ class MenuPrincipalNovedades : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu_principal_novedades)
 
-        initViews()
+        iniciarVista()
 
     }
 
-    private fun initViews(){
-        recyclerNovedades.layoutManager=LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
-        recyclerNovedades.adapter=NovedadesAdapter()
+    /**
+     * Funcion que se encarga de cargar la vista del activity
+     */
+    private fun iniciarVista() {
+
+        /*
+            Seleccionamos el tipo de layout y asignamos el adapter
+         */
+        recyclerNovedades.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+        recyclerNovedades.adapter = NovedadesAdapter()
 
         db.collection("Novedades").get().addOnSuccessListener { novedades ->
             val listaDeNovedades = novedades.toObjects(Novedades::class.java)
@@ -34,14 +41,14 @@ class MenuPrincipalNovedades : AppCompatActivity() {
 
         //Se añade este listener para capturar cualquier cambio en la base de datos y lo muestre en la pantalla
         db.collection("Novedades")
-            .addSnapshotListener { novedades, error ->
-                if(error == null){
-                    novedades?.let {
-                        val listaDeNovedades = it.toObjects(Novedades::class.java)
+                .addSnapshotListener { novedades, error ->
+                    if (error == null) {
+                        novedades?.let {
+                            val listaDeNovedades = it.toObjects(Novedades::class.java)
 
-                        (recyclerNovedades.adapter as NovedadesAdapter).setData(listaDeNovedades)
+                            (recyclerNovedades.adapter as NovedadesAdapter).setData(listaDeNovedades)
+                        }
                     }
                 }
-            }
     }
 }

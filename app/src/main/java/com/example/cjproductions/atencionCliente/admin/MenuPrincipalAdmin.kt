@@ -28,10 +28,10 @@ class MenuPrincipalAdmin : AppCompatActivity() {
 
         //guardamos en la variable 'user' el correo que se encuentre en la persistencia
         val prefs: SharedPreferences = getSharedPreferences(getString(R.string.preferenciasFile), Context.MODE_PRIVATE)
-        user= prefs.getString("email",null).toString()
+        user = prefs.getString("email", null).toString()
 
         //si el usuario no es nulo, iniciamos la vista
-        if (user.isNotEmpty()){
+        if (user.isNotEmpty()) {
             initViews()
         }
     }
@@ -43,7 +43,7 @@ class MenuPrincipalAdmin : AppCompatActivity() {
      * El admin no puede iniciar conversación, solo pueden hacerlo
      * los usuarios que no sean admins
      */
-    private fun initViews(){
+    private fun initViews() {
         listChatsRecyclerView.layoutManager = LinearLayoutManager(this)
         listChatsRecyclerView.adapter =
                 ChatAdapter { Chat ->
@@ -62,7 +62,7 @@ class MenuPrincipalAdmin : AppCompatActivity() {
         //Se añade este listener para capturar cualquier cambio en la base de datos y lo muestre en la pantalla
         userRef.collection("Chats")
                 .addSnapshotListener { Chats, error ->
-                    if(error == null){
+                    if (error == null) {
                         Chats?.let {
                             val listChats = it.toObjects(Chat::class.java)
 
@@ -76,7 +76,7 @@ class MenuPrincipalAdmin : AppCompatActivity() {
      * Funcion que inicia un nuevo activity con el chat que hemos seleccionado
      * Pasando como parametros el id del chat y el usuario
      */
-    private fun chatSelected(chat: Chat){
+    private fun chatSelected(chat: Chat) {
         val intent = Intent(this, ChatActivity::class.java)
         intent.putExtra("chatId", chat.id)
         intent.putExtra("user", user)

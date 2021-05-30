@@ -21,7 +21,7 @@ class RestablecerPassword : AppCompatActivity() {
         ponerListeners()
     }
 
-    private fun ponerListeners(){
+    private fun ponerListeners() {
         btRestablecerContrasena.setOnClickListener {
             if (!comprobarEmail()) return@setOnClickListener
 
@@ -33,17 +33,17 @@ class RestablecerPassword : AppCompatActivity() {
      * Funcion que comprueba que el campo del email no esté vacío y sea valido
      * (Puede no existir pero si ser valido)
      */
-    private fun comprobarEmail():Boolean{
+    private fun comprobarEmail(): Boolean {
 
-        if(!isOk(etRestablecerContrasena.text.toString())){
-            etRestablecerContrasena.error=resources.getString(R.string.error_campos).format("Email")
+        if (!isOk(etRestablecerContrasena.text.toString())) {
+            etRestablecerContrasena.error = resources.getString(R.string.error_campos).format("Email")
             return false
         }
 
         //Comprueba que el email introducido es valido (ojo, puede no existir pero ser valido)
         val patronEmail: Pattern = Patterns.EMAIL_ADDRESS
 
-        if(!patronEmail.matcher(etRestablecerContrasena.text.toString()).matches()){
+        if (!patronEmail.matcher(etRestablecerContrasena.text.toString()).matches()) {
             showAlert(resources.getString(R.string.emailNoValido))
             return false
         }
@@ -55,7 +55,7 @@ class RestablecerPassword : AppCompatActivity() {
      * Funcion que comprueba si una cadena está vacia
      * Dicha cadena se pasa como parametro
      */
-    private fun isOk(cadena: String): Boolean{
+    private fun isOk(cadena: String): Boolean {
         return !cadena.isEmpty()
     }
 
@@ -63,25 +63,25 @@ class RestablecerPassword : AppCompatActivity() {
      * Funcion que genera un mensaje de alerta en la pantalla
      * con el texto que se le pase por parametro
      */
-    private fun showAlert(mensaje: String){
+    private fun showAlert(mensaje: String) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("ERROR")
         builder.setMessage(mensaje)
         builder.setPositiveButton("Aceptar", null)
-        val dialog= builder.create()
+        val dialog = builder.create()
         dialog.show()
     }
 
     /**
      * Funcion que se encarga de enviar un correo al email introducido
      */
-    private fun cambiarContrasena(){
+    private fun cambiarContrasena() {
 
         FirebaseAuth.getInstance().sendPasswordResetEmail(etRestablecerContrasena.text.toString()).addOnCompleteListener {
 
-            if (it.isSuccessful){
+            if (it.isSuccessful) {
                 Toast.makeText(this, R.string.mensajeEditarContrasena, Toast.LENGTH_SHORT).show()
-            }else{
+            } else {
                 showAlert("No se ha podido enviar el correo para restablecer contraseña")
             }
         }

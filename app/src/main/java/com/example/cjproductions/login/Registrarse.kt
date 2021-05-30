@@ -19,8 +19,8 @@ import java.util.regex.Pattern
 
 class Registrarse : AppCompatActivity() {
 
-    private val db=FirebaseFirestore.getInstance()
-    private val storage= FirebaseStorage.getInstance().reference
+    private val db = FirebaseFirestore.getInstance()
+    private val storage = FirebaseStorage.getInstance().reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,24 +31,24 @@ class Registrarse : AppCompatActivity() {
         ponerListeners()
     }
 
-    private fun ponerListeners(){
+    private fun ponerListeners() {
         //Boton registrarse
 
-        btRegistrarse.setOnLongClickListener{
+        btRegistrarse.setOnLongClickListener {
             Toast.makeText(this, R.string.textoBtRegistrarse, Toast.LENGTH_SHORT).show()
             true
         }
 
-        btRegistrarse.setOnClickListener{
+        btRegistrarse.setOnClickListener {
             if (!comprobar()) return@setOnClickListener
 
             FirebaseAuth.getInstance().createUserWithEmailAndPassword(
-                etEmail.text.toString(),
-                etContrasena.text.toString()
-            ).addOnCompleteListener{
+                    etEmail.text.toString(),
+                    etContrasena.text.toString()
+            ).addOnCompleteListener {
 
-                if(it.isSuccessful){
-                    val textoDefault:String=resources.getString(R.string.etValorNoProporcionado)
+                if (it.isSuccessful) {
+                    val textoDefault: String = resources.getString(R.string.etValorNoProporcionado)
                     val rutaImagen = FirebaseAuth.getInstance().currentUser.uid
 
                     subirImagenDefecto() //se sube la imagen por defecto
@@ -56,11 +56,10 @@ class Registrarse : AppCompatActivity() {
                     Toast.makeText(this, R.string.registroCorrecto, Toast.LENGTH_LONG).show()
 
                     //Se crea la coleccion junto con el registro
-                    db.collection("Usuarios").document(etEmail.text.toString()).
-                    set(hashMapOf("Nombre" to textoDefault, "Telefono" to textoDefault, "Imagen" to rutaImagen))
+                    db.collection("Usuarios").document(etEmail.text.toString()).set(hashMapOf("Nombre" to textoDefault, "Telefono" to textoDefault, "Imagen" to rutaImagen))
 
                     onBackPressed()
-                }else{
+                } else {
                     showAlert("Ha ocurrido un error durante la creacion del usuario")
                 }
             }
@@ -71,31 +70,31 @@ class Registrarse : AppCompatActivity() {
     /**
      * Funcion que comprueba que los campos de texto no estén vacios
      */
-    private fun comprobar(): Boolean{
+    private fun comprobar(): Boolean {
         var email = etEmail.text.toString().trim()
-        var contrasena= etContrasena.text.toString().trim()
-        var contrasena2= etContrasena2.text.toString().trim()
+        var contrasena = etContrasena.text.toString().trim()
+        var contrasena2 = etContrasena2.text.toString().trim()
 
-        if(!isOk(email)){
-            etEmail.error=resources.getString(R.string.error_campos).format("Email")
+        if (!isOk(email)) {
+            etEmail.error = resources.getString(R.string.error_campos).format("Email")
             return false
         }
-        if(!isOk(contrasena)){
-            etContrasena.error=resources.getString(R.string.error_campos).format("Contraseña")
+        if (!isOk(contrasena)) {
+            etContrasena.error = resources.getString(R.string.error_campos).format("Contraseña")
             return false
         }
-        if(!isOk(contrasena2)){
-            etContrasena2.error=resources.getString(R.string.error_campos).format("Confirmar Contraseña")
+        if (!isOk(contrasena2)) {
+            etContrasena2.error = resources.getString(R.string.error_campos).format("Confirmar Contraseña")
             return false
         }
 
         //Comprueba que los dos campos de las contraseñas son iguales
-        if(!(contrasena == contrasena2)){
+        if (!(contrasena == contrasena2)) {
             showAlert(resources.getString(R.string.errorContraseña))
             return false
         }
 
-        if(contrasena.length<6){
+        if (contrasena.length < 6) {
             showAlert(resources.getString(R.string.contraseñaLongitudError))
             return false
         }
@@ -103,7 +102,7 @@ class Registrarse : AppCompatActivity() {
         //Comprueba que el email introducido es valido (ojo, puede no existir pero ser valido)
         val patronEmail: Pattern = Patterns.EMAIL_ADDRESS
 
-        if(!patronEmail.matcher(email).matches()){
+        if (!patronEmail.matcher(email).matches()) {
             showAlert(resources.getString(R.string.emailNoValido))
             return false
         }
@@ -116,7 +115,7 @@ class Registrarse : AppCompatActivity() {
      * Funcion que comprueba si una cadena está vacia
      * Dicha cadena se pasa como parametro
      */
-    private fun isOk(cadena: String): Boolean{
+    private fun isOk(cadena: String): Boolean {
         return !cadena.isEmpty()
     }
 
@@ -124,24 +123,26 @@ class Registrarse : AppCompatActivity() {
      * Funcion que genera un mensaje de alerta en la pantalla
      * con el texto que se le pase por parametro
      */
-    private fun showAlert(mensaje: String){
+    private fun showAlert(mensaje: String) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("ERROR")
         builder.setMessage(mensaje)
         builder.setPositiveButton("Aceptar", null)
-        val dialog= builder.create()
+        val dialog = builder.create()
         dialog.show()
     }
 
     /**
      * Metodo que subirá la imagen que ha elegido el usuario a la base de datos
      */
-    private fun subirImagenDefecto(){
-        val referencia = storage.child("usuarios/"+FirebaseAuth.getInstance().currentUser.uid+"/profile.jpg")
+    private fun subirImagenDefecto() {
+        val referencia = storage.child("usuarios/" + FirebaseAuth.getInstance().currentUser.uid + "/profile.jpg")
         referencia.putFile(Uri.parse("android.resource://${packageName}/${R.mipmap.user_default}")).addOnSuccessListener {
-            @Override fun onSuccess(taskSnapshot: UploadTask.TaskSnapshot){
+            @Override
+            fun onSuccess(taskSnapshot: UploadTask.TaskSnapshot) {
                 referencia.downloadUrl.addOnSuccessListener {
-                    @Override fun onSuccess(uri: Uri){
+                    @Override
+                    fun onSuccess(uri: Uri) {
                         Picasso.get().load(uri).into(editarImagen)
                     }
                 }

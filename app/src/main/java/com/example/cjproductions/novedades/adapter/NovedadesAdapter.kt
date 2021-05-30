@@ -10,30 +10,36 @@ import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_novedad.view.*
 
-class NovedadesAdapter: RecyclerView.Adapter<NovedadesAdapter.NovedadesViewHolder>() {
+class NovedadesAdapter : RecyclerView.Adapter<NovedadesAdapter.NovedadesViewHolder>() {
 
-    private val storage= FirebaseStorage.getInstance().reference
+    private val storage = FirebaseStorage.getInstance().reference
     private var listaNovedades: List<Novedades> = emptyList()
 
-    fun setData(lista:List<Novedades>){
-        listaNovedades=lista
+    fun setData(lista: List<Novedades>) {
+        listaNovedades = lista
         notifyDataSetChanged()
     }
 
+    /**
+     * Creamos la vista
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NovedadesViewHolder {
         return NovedadesViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_novedad, parent, false))
     }
 
 
+    /**
+     * Aqui ponemos lo que queremos mostrar en cada celda del recycler view
+     */
     override fun onBindViewHolder(holder: NovedadesViewHolder, position: Int) {
-        val perfilReferencia= storage.child(listaNovedades[position].imagen)
+        val perfilReferencia = storage.child(listaNovedades[position].imagen)
 
-        holder.itemView.tvTituloNovedad.text=listaNovedades[position].titulo
-        holder.itemView.tvDescripcionNovedad.text=listaNovedades[position].descripcion
-        holder.itemView.tvFechaNovedad.text=listaNovedades[position].fecha
+        holder.itemView.tvTituloNovedad.text = listaNovedades[position].titulo
+        holder.itemView.tvDescripcionNovedad.text = listaNovedades[position].descripcion
+        holder.itemView.tvFechaNovedad.text = listaNovedades[position].fecha
 
         //Coloca la imagen desde el almacenamiento de firebase
-        if(perfilReferencia!=null) {
+        if (perfilReferencia != null) {
             perfilReferencia.downloadUrl.addOnSuccessListener {
                 Picasso.get().load(it).resize(600, 400).centerCrop().into(holder.itemView.imagenNovedad)
             }

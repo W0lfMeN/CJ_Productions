@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.activity_productos.*
 
 class ProductosActivity : AppCompatActivity() {
 
-    private var enlace: String=""
+    private var enlace: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,10 +26,10 @@ class ProductosActivity : AppCompatActivity() {
             webView.reload()
         }
 
-        webView.webChromeClient = object : WebChromeClient(){
+        webView.webChromeClient = object : WebChromeClient() {
         }
 
-        webView.webViewClient = object : WebViewClient(){
+        webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                 return false
             }
@@ -54,9 +54,9 @@ class ProductosActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if(webView.canGoBack()){
+        if (webView.canGoBack()) {
             webView.goBack()
-        }else{
+        } else {
             super.onBackPressed()
         }
     }
