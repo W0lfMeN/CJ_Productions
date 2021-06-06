@@ -9,24 +9,35 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.cjproductions.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
+import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_editar_usuarios.*
+import kotlinx.android.synthetic.main.activity_inicio_sesion.*
 import kotlinx.android.synthetic.main.activity_registrarse.*
+import kotlinx.android.synthetic.main.activity_registrarse.etContrasena
+import kotlinx.android.synthetic.main.activity_registrarse.etEmail
 import java.util.regex.Pattern
 
 
 class Registrarse : AppCompatActivity() {
 
     private val db = FirebaseFirestore.getInstance()
-    private val storage = FirebaseStorage.getInstance().reference
+    lateinit var storageReference: StorageReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registrarse)
 
         title = resources.getString(R.string.tituloRegistrarse)
+
+        //--------------------------------------------
+        val storage= Firebase.storage
+        storageReference=storage.reference
+        //--------------------------------------------
 
         ponerListeners()
     }
@@ -49,7 +60,7 @@ class Registrarse : AppCompatActivity() {
 
                 if (it.isSuccessful) {
                     val textoDefault: String = resources.getString(R.string.etValorNoProporcionado)
-                    val rutaImagen = FirebaseAuth.getInstance().currentUser.uid
+                    val rutaImagen = FirebaseAuth.getInstance().currentUser.email
 
                     subirImagenDefecto() //se sube la imagen por defecto
 
@@ -136,7 +147,7 @@ class Registrarse : AppCompatActivity() {
      * Metodo que subirá la imagen que ha elegido el usuario a la base de datos
      */
     private fun subirImagenDefecto() {
-        val referencia = storage.child("usuarios/" + FirebaseAuth.getInstance().currentUser.uid + "/profile.jpg")
+        val referencia = storageReference.child("usuarios/${etEmail.text.trim()}/profile.jpg")
         referencia.putFile(Uri.parse("android.resource://${packageName}/${R.mipmap.user_default}")).addOnSuccessListener {
             @Override
             fun onSuccess(taskSnapshot: UploadTask.TaskSnapshot) {

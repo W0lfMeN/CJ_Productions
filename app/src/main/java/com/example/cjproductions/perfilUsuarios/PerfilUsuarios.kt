@@ -22,6 +22,7 @@ class PerfilUsuarios : AppCompatActivity() {
 
     private val db = FirebaseFirestore.getInstance()
     lateinit var storageReference: StorageReference
+    private lateinit var email:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val dialog: AlertDialog = SpotsDialog.Builder()
@@ -41,8 +42,17 @@ class PerfilUsuarios : AppCompatActivity() {
 
         rellenarCampos()
 
+        //--------------------------------------------
         val storage= Firebase.storage
         storageReference=storage.reference
+        //--------------------------------------------
+
+        //--------------------------------------------
+        val prefs: SharedPreferences? = getSharedPreferences(getString(R.string.preferenciasFile), Context.MODE_PRIVATE)
+        if (prefs != null) {
+            email=prefs.getString("email", "null").toString()
+        }
+        //--------------------------------------------
 
         cargarImagen()
 
@@ -117,7 +127,7 @@ class PerfilUsuarios : AppCompatActivity() {
 
     private fun cargarImagen() {
 
-        val perfilReferencia = storageReference.child("usuarios/" + FirebaseAuth.getInstance().currentUser.uid + "/profile.jpg")
+        val perfilReferencia = storageReference.child("usuarios/$email/profile.jpg")
 
         //Coloca la imagen desde el almacenamiento de firebase
         if (perfilReferencia != null) {

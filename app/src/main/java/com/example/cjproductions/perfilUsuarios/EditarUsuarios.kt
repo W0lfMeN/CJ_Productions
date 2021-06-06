@@ -1,7 +1,6 @@
 package com.example.cjproductions.perfilUsuarios
 
 import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -17,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.cjproductions.R
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
@@ -38,7 +36,8 @@ class EditarUsuarios : AppCompatActivity() {
 
     private lateinit var nombre: String
     private lateinit var telefono: String
-     lateinit var imagen: Uri
+
+    private lateinit var email:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,16 +46,25 @@ class EditarUsuarios : AppCompatActivity() {
         title = resources.getString(R.string.tituloEditarPerfil)
         ponerListeners()
 
+        //--------------------------------------------
+        val prefs: SharedPreferences? = getSharedPreferences(getString(R.string.preferenciasFile), Context.MODE_PRIVATE)
+        if (prefs != null) {
+            email=prefs.getString("email", "null").toString()
+        }
+        //--------------------------------------------
+
+        //--------------------------------------------
         val storage= Firebase.storage
         storageReference=storage.reference
 
-        imagen=Uri.parse(storageReference.child("usuarios/" + FirebaseAuth.getInstance().currentUser.uid + "/profile.jpg").toString())
+
+        //--------------------------------------------
 
         cargarImagen()
     }
 
     private fun cargarImagen() {
-        val perfilReferencia = storageReference.child("usuarios/" + FirebaseAuth.getInstance().currentUser.uid + "/profile.jpg")
+        val perfilReferencia = storageReference.child("usuarios/$email/profile.jpg")
 
         //Coloca la imagen desde el almacenamiento de firebase
         perfilReferencia.downloadUrl.addOnSuccessListener {
@@ -91,9 +99,9 @@ class EditarUsuarios : AppCompatActivity() {
 
                 db.collection("Usuarios").document(prefs.getString("email", null).toString())
                         .set(hashMapOf("Nombre" to nombre, "Telefono" to telefono))
-
-                subirImagen()
             }
+
+            Toast.makeText(this, "Datos actualizados correctamente", Toast.LENGTH_SHORT).show()
 
             finish() //Cierra el activity
 
@@ -115,16 +123,14 @@ class EditarUsuarios : AppCompatActivity() {
                 Toast.makeText(this, "Se ha pulsado camara", Toast.LENGTH_SHORT).show()
                 accionCamara()
 
-                subirImagen()
-
                 mAlertDialog.dismiss()
             }
 
             mAlertDialog.dialogoBtDefecto.setOnClickListener {
                 editarImagen.setImageURI(Uri.parse("android.resource://${packageName}/${R.mipmap.user_default}"))
-                imagen = Uri.parse("android.resource://${packageName}/${R.mipmap.user_default}")
+                val imagen= Uri.parse("android.resource://${packageName}/${R.mipmap.user_default}")
 
-                subirImagen()
+                subirImagen(imagen)
 
                 mAlertDialog.dismiss()
             }
@@ -132,16 +138,16 @@ class EditarUsuarios : AppCompatActivity() {
             mAlertDialog.dialogoBtGaleria.setOnClickListener {
                 accionGaleria()
 
-                subirImagen()
-
                 mAlertDialog.dismiss()
             }
         }
     }
 
     private fun accionGaleria() {
-        val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(gallery, GALERIA_ACTION_CODE)
+        val i = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        i.addCategory(Intent.CATEGORY_OPENABLE)
+        i.type = "image/*"
+        startActivityForResult(i, GALERIA_ACTION_CODE)
     }
 
     /**
@@ -182,42 +188,53 @@ class EditarUsuarios : AppCompatActivity() {
         /**
          * DE PARTE DE LA CAMARA
          */
-        if (requestCode == CAMERA_ACTION_CODE && resultCode == Activity.RESULT_OK) {
+        if (requestCode == CAMERA_ACTION_CODE && resultCode == RESULT_OK) {
             var datos: Bundle? = data?.extras
             var fotoBitmap: Bitmap = datos?.get("data") as Bitmap
 
-            var foto: Uri = getImageUri(this, fotoBitmap)
+            var uri: Uri = getImageUri(this, fotoBitmap)
 
-            editarImagen.setImageURI(foto)
+            editarImagen.setImageURI(uri)
 
-            if (foto != null) {
-                imagen = foto
+            if(data!=null){
+                if(email!="-1"){
+                    if (uri != null) {
+                        subirImagen(uri)
+                    }
+                }
+
             }
         }
 
         /**
          * DE PARTE DE LA GALERIA
          */
-        if (requestCode == GALERIA_ACTION_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                var foto: Uri? = data?.data
-
-                editarImagen.setImageURI(foto)
-
-                if (foto != null) {
-                    imagen = foto
-                }
+        if(data!=null){
+            val uri: Uri? =data.data // mnt/sdacard/images/image.jpg por ejemplo
+            if(email!="-1"){
+                subirImagen(uri)
             }
+
         }
     }
 
     /**
      * Metodo que subirá la imagen que ha elegido el usuario a la base de datos
      */
-    private fun subirImagen() {
-        val referencia = storageReference.child("usuarios/" + FirebaseAuth.getInstance().currentUser.uid + "/profile.jpg")
-        referencia.putFile(imagen).addOnSuccessListener {
-            Toast.makeText(this, "Imagen actualizada correctamente", Toast.LENGTH_SHORT).show()
+    private fun subirImagen(uri: Uri?) {
+        val referencia = storageReference.child("usuarios/$email/profile.jpg")
+
+        if(referencia!=null){
+
+            if (uri != null) {
+                referencia.putFile(uri).addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        cargarImagen()
+                    } else {
+                        Toast.makeText(this, "Se ha producido un error", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
         }
     }
 
