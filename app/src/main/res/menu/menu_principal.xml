@@ -28,5 +28,12 @@
         android:icon="@drawable/login_icon"
         app:showAsAction="ifRoom"/>
 
+    <!--
+    <item android:id="@+id/mainBtVerPerfil"
+        android:title="@string/mainBtIniciarSesion"
+        android:icon="@drawable/profile_icon"
+        app:showAsAction="ifRoom"/>
+    -->
+
 
 </menu>

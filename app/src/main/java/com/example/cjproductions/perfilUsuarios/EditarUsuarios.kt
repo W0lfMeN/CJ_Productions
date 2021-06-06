@@ -2,7 +2,6 @@ package com.example.cjproductions.perfilUsuarios
 
 import android.Manifest
 import android.app.Activity
-import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -11,7 +10,6 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -21,11 +19,11 @@ import androidx.core.content.ContextCompat
 import com.example.cjproductions.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.UploadTask
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_editar_usuarios.*
-import kotlinx.android.synthetic.main.activity_editar_usuarios.btEditarImagen
 import kotlinx.android.synthetic.main.dialogo_editar_imagen.*
 import java.io.ByteArrayOutputStream
 
@@ -33,14 +31,14 @@ import java.io.ByteArrayOutputStream
 class EditarUsuarios : AppCompatActivity() {
 
     private val db = FirebaseFirestore.getInstance()
-    private val storage = FirebaseStorage.getInstance().getReference()
+    lateinit var storageReference: StorageReference
 
     private val CAMERA_ACTION_CODE: Int = 201
     private val GALERIA_ACTION_CODE: Int = 501
 
     private lateinit var nombre: String
     private lateinit var telefono: String
-    private var imagen: Uri = Uri.parse(storage.child("usuarios/" + FirebaseAuth.getInstance().currentUser.uid + "/profile.jpg").toString())
+     lateinit var imagen: Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,11 +47,16 @@ class EditarUsuarios : AppCompatActivity() {
         title = resources.getString(R.string.tituloEditarPerfil)
         ponerListeners()
 
+        val storage= Firebase.storage
+        storageReference=storage.reference
+
+        imagen=Uri.parse(storageReference.child("usuarios/" + FirebaseAuth.getInstance().currentUser.uid + "/profile.jpg").toString())
+
         cargarImagen()
     }
 
     private fun cargarImagen() {
-        val perfilReferencia = storage.child("usuarios/" + FirebaseAuth.getInstance().currentUser.uid + "/profile.jpg")
+        val perfilReferencia = storageReference.child("usuarios/" + FirebaseAuth.getInstance().currentUser.uid + "/profile.jpg")
 
         //Coloca la imagen desde el almacenamiento de firebase
         perfilReferencia.downloadUrl.addOnSuccessListener {
@@ -112,6 +115,8 @@ class EditarUsuarios : AppCompatActivity() {
                 Toast.makeText(this, "Se ha pulsado camara", Toast.LENGTH_SHORT).show()
                 accionCamara()
 
+                subirImagen()
+
                 mAlertDialog.dismiss()
             }
 
@@ -126,6 +131,8 @@ class EditarUsuarios : AppCompatActivity() {
 
             mAlertDialog.dialogoBtGaleria.setOnClickListener {
                 accionGaleria()
+
+                subirImagen()
 
                 mAlertDialog.dismiss()
             }
@@ -208,9 +215,9 @@ class EditarUsuarios : AppCompatActivity() {
      * Metodo que subirá la imagen que ha elegido el usuario a la base de datos
      */
     private fun subirImagen() {
-        val referencia = storage.child("usuarios/" + FirebaseAuth.getInstance().currentUser.uid + "/profile.jpg")
-        referencia.putFile(imagen!!).addOnSuccessListener {
-            Log.d("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ", "Subida correcta")
+        val referencia = storageReference.child("usuarios/" + FirebaseAuth.getInstance().currentUser.uid + "/profile.jpg")
+        referencia.putFile(imagen).addOnSuccessListener {
+            Toast.makeText(this, "Imagen actualizada correctamente", Toast.LENGTH_SHORT).show()
         }
     }
 

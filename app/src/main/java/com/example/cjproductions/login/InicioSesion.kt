@@ -96,6 +96,10 @@ class InicioSesion : AppCompatActivity() {
     }
 
 
+    /**
+     * Este metodo está principalmente por el inicio de sesion mediante google
+     * Aqui se realiza el inicio de sesion, controlando que pueda haber un error y capturandolo
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 200) {
@@ -149,7 +153,7 @@ class InicioSesion : AppCompatActivity() {
 
                             finish()
                         } else {
-                            showAlert("Ha ocurrido un error durante la creacion del usuario")
+                            showAlert("Ha ocurrido un error durante durante el inicio de sesión")
                         }
                     }
                 }

@@ -10,7 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.cjproductions.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
 import dmax.dialog.SpotsDialog
 import kotlinx.android.synthetic.main.activity_perfil_usuarios.*
@@ -18,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_perfil_usuarios.*
 class PerfilUsuarios : AppCompatActivity() {
 
     private val db = FirebaseFirestore.getInstance()
-    private val storage = FirebaseStorage.getInstance().reference
+    lateinit var storageReference: StorageReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val dialog: AlertDialog = SpotsDialog.Builder()
@@ -37,6 +40,9 @@ class PerfilUsuarios : AppCompatActivity() {
         ponerListeners()
 
         rellenarCampos()
+
+        val storage= Firebase.storage
+        storageReference=storage.reference
 
         cargarImagen()
 
@@ -111,7 +117,7 @@ class PerfilUsuarios : AppCompatActivity() {
 
     private fun cargarImagen() {
 
-        val perfilReferencia = storage.child("usuarios/" + FirebaseAuth.getInstance().currentUser.uid + "/profile.jpg")
+        val perfilReferencia = storageReference.child("usuarios/" + FirebaseAuth.getInstance().currentUser.uid + "/profile.jpg")
 
         //Coloca la imagen desde el almacenamiento de firebase
         if (perfilReferencia != null) {
