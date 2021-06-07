@@ -10,11 +10,8 @@ import com.example.cjproductions.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.ktx.storage
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_editar_usuarios.*
 import kotlinx.android.synthetic.main.activity_inicio_sesion.*
 import kotlinx.android.synthetic.main.activity_registrarse.*
@@ -60,14 +57,13 @@ class Registrarse : AppCompatActivity() {
 
                 if (it.isSuccessful) {
                     val textoDefault: String = resources.getString(R.string.etValorNoProporcionado)
-                    val rutaImagen = FirebaseAuth.getInstance().currentUser.email
 
                     subirImagenDefecto() //se sube la imagen por defecto
 
                     Toast.makeText(this, R.string.registroCorrecto, Toast.LENGTH_LONG).show()
 
                     //Se crea la coleccion junto con el registro
-                    db.collection("Usuarios").document(etEmail.text.toString()).set(hashMapOf("Nombre" to textoDefault, "Telefono" to textoDefault, "Imagen" to rutaImagen))
+                    db.collection("Usuarios").document(etEmail.text.toString()).set(hashMapOf("Nombre" to textoDefault, "Telefono" to textoDefault))
 
                     onBackPressed()
                 } else {
@@ -148,7 +144,9 @@ class Registrarse : AppCompatActivity() {
      */
     private fun subirImagenDefecto() {
         val referencia = storageReference.child("usuarios/${etEmail.text.trim()}/profile.jpg")
-        referencia.putFile(Uri.parse("android.resource://${packageName}/${R.mipmap.user_default}")).addOnSuccessListener {
+        referencia.putFile(Uri.parse("android.resource://${packageName}/${R.mipmap.user_default}"))
+        /*
+        .addOnSuccessListener {
             @Override
             fun onSuccess(taskSnapshot: UploadTask.TaskSnapshot) {
                 referencia.downloadUrl.addOnSuccessListener {
@@ -158,6 +156,6 @@ class Registrarse : AppCompatActivity() {
                     }
                 }
             }
-        }
+         */
     }
 }

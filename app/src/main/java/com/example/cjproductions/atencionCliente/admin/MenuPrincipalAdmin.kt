@@ -3,9 +3,8 @@ package com.example.cjproductions.atencionCliente.admin
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cjproductions.R
 import com.example.cjproductions.atencionCliente.activities.ChatActivity

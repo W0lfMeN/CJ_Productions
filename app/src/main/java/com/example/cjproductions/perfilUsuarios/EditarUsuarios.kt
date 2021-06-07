@@ -80,6 +80,7 @@ class EditarUsuarios : AppCompatActivity() {
 
         btGuardarDatos.setOnClickListener {
             val prefs: SharedPreferences? = getSharedPreferences(getString(R.string.preferenciasFile), Context.MODE_PRIVATE)
+
             if (prefs != null) {
 
                 //Comprobar campo Nombre
@@ -95,7 +96,6 @@ class EditarUsuarios : AppCompatActivity() {
                     telefono = resources.getString(R.string.etValorNoProporcionado)
                 else
                     telefono = etEditarTelefono.text.toString()
-
 
                 db.collection("Usuarios").document(prefs.getString("email", null).toString())
                         .set(hashMapOf("Nombre" to nombre, "Telefono" to telefono))

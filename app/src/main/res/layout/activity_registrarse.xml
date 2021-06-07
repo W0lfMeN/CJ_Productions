@@ -76,7 +76,7 @@
                     android:layout_margin="10dp"
                     android:backgroundTint="@android:color/white"
                     android:hint="@string/etContraseña2"
-                    android:inputType="textEmailAddress"
+                    android:inputType="textPassword"
                     android:textColor="@android:color/white" />
             </androidx.cardview.widget.CardView>
 

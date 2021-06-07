@@ -1,12 +1,11 @@
 package com.example.cjproductions.atencionCliente.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.cjproductions.atencionCliente.adapters.MessageAdapter
 import com.example.cjproductions.R
+import com.example.cjproductions.atencionCliente.adapters.MessageAdapter
 import com.example.cjproductions.atencionCliente.models.Message
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
