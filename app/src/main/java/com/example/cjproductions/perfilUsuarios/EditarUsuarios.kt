@@ -107,12 +107,12 @@ class EditarUsuarios : AppCompatActivity() {
 
         }
 
-        btEditarImagen.setOnLongClickListener {
+        btEditarFoto.setOnLongClickListener {
             Toast.makeText(this, R.string.textoBtCambiarImagen, Toast.LENGTH_SHORT).show()
             true
         }
 
-        btEditarImagen.setOnClickListener {
+        btEditarFoto.setOnClickListener {
             val dialogView = LayoutInflater.from(this).inflate(R.layout.dialogo_editar_imagen, null)
 
             val mBuilder = AlertDialog.Builder(this).setView(dialogView).setTitle(resources.getString(R.string.dialogoTitulo))
