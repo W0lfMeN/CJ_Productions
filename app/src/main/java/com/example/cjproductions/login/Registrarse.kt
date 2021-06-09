@@ -1,11 +1,18 @@
 package com.example.cjproductions.login
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
 import com.example.cjproductions.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -21,6 +28,7 @@ import java.util.regex.Pattern
 
 
 class Registrarse : AppCompatActivity() {
+
 
     private val db = FirebaseFirestore.getInstance()
     lateinit var storageReference: StorageReference
@@ -64,6 +72,8 @@ class Registrarse : AppCompatActivity() {
 
                     //Se crea la coleccion junto con el registro
                     db.collection("Usuarios").document(etEmail.text.toString()).set(hashMapOf("Nombre" to textoDefault, "Telefono" to textoDefault))
+
+                    notificacionPush(etEmail.text.toString())
 
                     onBackPressed()
                 } else {
@@ -157,5 +167,31 @@ class Registrarse : AppCompatActivity() {
                 }
             }
          */
+    }
+
+    /**
+     * Funcion que enviará una notificacion push al usuario
+     * Puesto que será solo una la que se use, se crea de esta forma
+     *
+     * Si el usuario pulsa la notificacion, le llevará al activity IniciarSesion.kt
+     */
+    fun notificacionPush(correo:String) {
+        val mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val channel = NotificationChannel(resources.getString(R.string.app_name),
+                resources.getString(R.string.app_name),
+                NotificationManager.IMPORTANCE_DEFAULT)
+        channel.description = "EL_CANAL_DE_REGISTRO"
+        mNotificationManager.createNotificationChannel(channel)
+        val mBuilder = NotificationCompat.Builder(applicationContext, resources.getString(R.string.app_name))
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(resources.getString(R.string.tituloNotificacion))
+                .setContentText(correo)
+                .setStyle(NotificationCompat.BigTextStyle()
+                        .bigText(resources.getString(R.string.textoNotificacion)))
+                .setAutoCancel(true) // Esto hace que al pulsar la notificacion, esta se borre
+        val intent = Intent(applicationContext, InicioSesion::class.java) //El activity que se lanza al pulsar la notificacion
+        val pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        mBuilder.setContentIntent(pi)
+        mNotificationManager.notify(0, mBuilder.build())
     }
 }
