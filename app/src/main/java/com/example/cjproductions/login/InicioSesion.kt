@@ -1,5 +1,9 @@
 package com.example.cjproductions.login
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -7,6 +11,7 @@ import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
 import com.example.cjproductions.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -58,6 +63,7 @@ class InicioSesion : AppCompatActivity() {
                     Toast.makeText(this, R.string.inicioSesionCorrecto, Toast.LENGTH_LONG).show()
                     val returnIntent = Intent()
                     returnIntent.putExtra("email", etEmail.text.toString().trim())
+                    returnIntent.putExtra("google", "0") //QUIERE DECIR QUE NO ES UN INICIO DE SESION CON GOOGLE
                     setResult(RESULT_OK, returnIntent)
                     finish()
                 } else {
@@ -124,6 +130,7 @@ class InicioSesion : AppCompatActivity() {
 
                             val returnIntent = Intent()
                             returnIntent.putExtra("email", account.email)
+                            returnIntent.putExtra("google", "1") //QUIERE DECIR QUE ES UN INICIO DE SESION CON GOOGLE
                             setResult(RESULT_OK, returnIntent)
 
                             Toast.makeText(this, R.string.inicioSesionCorrecto, Toast.LENGTH_LONG).show()
@@ -145,7 +152,7 @@ class InicioSesion : AppCompatActivity() {
                             db.collection("Usuarios").document(account.email.toString()).get().addOnCompleteListener {
                                 if (it.isComplete) {
 
-                                    if (it.getResult()?.exists() != true) {
+                                    if (it.result?.exists() != true) {
 
                                         subirImagenDefecto() //Se sube la imagen por defecto
 
@@ -153,6 +160,7 @@ class InicioSesion : AppCompatActivity() {
                                         db.collection("Usuarios").document(account.email.toString())
                                                 .set(hashMapOf("Nombre" to textoDefault, "Telefono" to textoDefault))
 
+                                        notificacionPush(account.email.toString())
                                     }
                                 }
                             }
@@ -239,6 +247,32 @@ class InicioSesion : AppCompatActivity() {
             }
         }
          */
+    }
+
+    /**
+     * Funcion que enviará una notificacion push al usuario
+     * Puesto que será solo una la que se use, se crea de esta forma
+     *
+     * Si el usuario pulsa la notificacion, le llevará al activity IniciarSesion.kt
+     */
+    fun notificacionPush(correo:String) {
+        val mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val channel = NotificationChannel(resources.getString(R.string.app_name),
+                resources.getString(R.string.app_name),
+                NotificationManager.IMPORTANCE_DEFAULT)
+        channel.description = "EL_CANAL_DE_REGISTRO"
+        mNotificationManager.createNotificationChannel(channel)
+        val mBuilder = NotificationCompat.Builder(applicationContext, resources.getString(R.string.app_name))
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(resources.getString(R.string.tituloNotificacion))
+                .setContentText(correo)
+                .setStyle(NotificationCompat.BigTextStyle()
+                        .bigText(resources.getString(R.string.textoNotificacion)))
+                .setAutoCancel(true) // Esto hace que al pulsar la notificacion, esta se borre
+        val intent = Intent(applicationContext, InicioSesion::class.java) //El activity que se lanza al pulsar la notificacion
+        val pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        mBuilder.setContentIntent(pi)
+        mNotificationManager.notify(0, mBuilder.build())
     }
 
 }

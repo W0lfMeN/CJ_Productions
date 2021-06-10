@@ -117,5 +117,14 @@
     <string name="sobreNosotros2">Creada en Almería y con la meta de llegar a todos
                                 los rincones del mundo.</string>
 
+    <!-- ////////////////////// NOTIFICACIONES /////////////////////////// -->
+    <string name="channel_name">notificacion</string>
+    <string name="tituloNotificacion">Muchas gracias por registrarte</string>
+    <string name="textoNotificacion">Estamos encantados de que formes parte de nuestra pequeña comunidad
+                                    y esperamos que estés disfrutando de nuestros videojuegos.
+                                    Ya puedes iniciar sesión, pulsa en la notificación o accede desde el
+                                    menú principal.</string>
+    <string name="channel_description">canalNotificacion</string>
+
 
 </resources>

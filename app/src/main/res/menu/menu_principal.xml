@@ -20,12 +20,12 @@
 
     <item android:id="@+id/mainBtRegistrarse"
         android:title="@string/mainBtRegistrarse"
-        android:icon="@drawable/add_user_icon"
+        android:icon="@drawable/add_user_icon_blanco"
         app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/mainBtIniciarSesion"
         android:title="@string/mainBtIniciarSesion"
-        android:icon="@drawable/login_icon"
+        android:icon="@drawable/login_icon_blanco"
         app:showAsAction="ifRoom"/>
 
     <!--

@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cjproductions.R
@@ -50,6 +51,18 @@ class PerfilUsuarios : AppCompatActivity() {
         val prefs: SharedPreferences? = getSharedPreferences(getString(R.string.preferenciasFile), Context.MODE_PRIVATE)
         if (prefs != null) {
             email=prefs.getString("email", "null").toString()
+
+            /*
+            Si el parametro que hay en la variable "google" es 1.
+            Quiere decir que se ha iniciado sesión con una cuenta de google,
+            por lo que oculta el botón de cambiar contraseña.
+
+            En caso contrario, se mostrará dicho botón
+             */
+            if(prefs.getString("google", "null")?.contains("1") == true)
+                btCambiarContrasena.visibility = View.INVISIBLE
+            else
+                btCambiarContrasena.visibility = View.VISIBLE
         }
         //--------------------------------------------
 

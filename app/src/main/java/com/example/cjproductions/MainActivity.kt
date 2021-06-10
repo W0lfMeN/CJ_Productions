@@ -206,11 +206,6 @@ class MainActivity : AppCompatActivity() {
                 startActivityForResult(intent, 100)
             }
 
-            /*
-            R.id.mainBtVerPerfil ->{
-
-            }*/
-
         }
         return super.onOptionsItemSelected(item)
     }
@@ -218,13 +213,13 @@ class MainActivity : AppCompatActivity() {
     /**
      * Metodo que es llamado automaticamente cuando termina el activity Iniciar sesion
      * Lo que hace es retornar el correo que ha sido introducido en el activity para guardarlo
-     * en el archivo de preferencias
+     * en el archivo de preferencias y si es de google o no
      */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 100 && resultCode == RESULT_OK) {
             if (data != null) {
-                editarPersistenciaDatos(data.getStringExtra("email"))
+                editarPersistenciaDatos(data.getStringExtra("email"), data.getStringExtra("google"))
 
                 //Aqui haremos aparecer el boton de Ver Perfil
                 mostrarOcultarBtVerPerfil(1)
@@ -236,10 +231,11 @@ class MainActivity : AppCompatActivity() {
     /**
      * Metodo que añade el correo al fichero de persistencia
      */
-    fun editarPersistenciaDatos(email: String?) {
+    private fun editarPersistenciaDatos(email: String?, google:String?) {
         val prefs: SharedPreferences.Editor? = getSharedPreferences(getString(R.string.preferenciasFile), Context.MODE_PRIVATE).edit()
         if (prefs != null) {
             prefs.putString("email", email)
+            prefs.putString("google", google)
             prefs.apply()
         }
     }
@@ -250,7 +246,7 @@ class MainActivity : AppCompatActivity() {
      * 1 para MOSTRAR el botón
      * 0 para OCULTAR el botón
      */
-    fun mostrarOcultarBtVerPerfil(valor: Int) {
+    private fun mostrarOcultarBtVerPerfil(valor: Int) {
         if (valor == 1)
             mainBtPerfil.visibility = View.VISIBLE
 
