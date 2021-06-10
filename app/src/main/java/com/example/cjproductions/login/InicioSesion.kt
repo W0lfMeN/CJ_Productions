@@ -233,20 +233,6 @@ class InicioSesion : AppCompatActivity() {
     private fun subirImagenDefecto() {
         val referencia = storageReference.child("usuarios/"+FirebaseAuth.getInstance().currentUser.email.toString()+"/profile.jpg")
         referencia.putFile(Uri.parse("android.resource://${packageName}/${R.mipmap.user_default}"))
-
-        /*
-        .addOnSuccessListener {
-            @Override
-            fun onSuccess(taskSnapshot: UploadTask.TaskSnapshot) {
-                referencia.downloadUrl.addOnSuccessListener {
-                    @Override
-                    fun onSuccess(uri: Uri) {
-                        Picasso.get().load(uri).into(editarImagen)
-                    }
-                }
-            }
-        }
-         */
     }
 
     /**
