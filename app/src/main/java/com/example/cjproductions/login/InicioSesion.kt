@@ -253,11 +253,8 @@ class InicioSesion : AppCompatActivity() {
                 .setContentTitle(resources.getString(R.string.tituloNotificacion))
                 .setContentText(correo)
                 .setStyle(NotificationCompat.BigTextStyle()
-                        .bigText(resources.getString(R.string.textoNotificacion)))
+                        .bigText(resources.getString(R.string.textoNotificacionGoogle)))
                 .setAutoCancel(true) // Esto hace que al pulsar la notificacion, esta se borre
-        val intent = Intent(applicationContext, InicioSesion::class.java) //El activity que se lanza al pulsar la notificacion
-        val pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-        mBuilder.setContentIntent(pi)
         mNotificationManager.notify(0, mBuilder.build())
     }
 

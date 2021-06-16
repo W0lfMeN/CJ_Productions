@@ -55,7 +55,9 @@ class ChatActivity : AppCompatActivity() {
         messagesRecylerView.adapter = MessageAdapter(user)
 
         sendMessageButton.setOnClickListener {
-            sendMessage()
+            if(messageTextField.text.isNotBlank()){
+                sendMessage()
+            }
         }
 
         val chatRef = db.collection("Chats").document(chatId)
